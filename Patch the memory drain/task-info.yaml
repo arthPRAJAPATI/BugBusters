@@ -1,0 +1,2415 @@
+type: edu
+files:
+- name: src/memorizingtool/BooleanMemorize.java
+  visible: true
+  text: |
+    package memorizingtool;//Chapter 1
+
+    import java.io.IOException;
+    import java.lang.reflect.InvocationTargetException;
+    import java.util.*;
+
+    /**
+     It is all about memorizing Booleans. You see, regular Booleans are so forgetful!
+     They constantly change their value, and it's just too much for us to handle.
+     It probably has a magical power to store Boolean values indefinitely. You can pass a Boolean to it, and it will remember it forever.
+
+     This class must be a lifesaver for forgetful programmers like me. No more worrying about Booleans changing unexpectedly.
+     We can now rely on the trustworthy BooleanMemorize class to keep our Booleans intact. I can't wait to use it in my next project!
+     */
+    public class BooleanMemorize {
+      static    ArrayList<Boolean>    list   =  new    ArrayList<>();
+      boolean     finished  =  false;
+      static  List<Object>   args  =   new  ArrayList<>();
+      static  Map<String,    Class<?>[]>   commands;
+      //Once upon a time in a small village nestled between rolling hills, there lived...
+      public BooleanMemorize() {
+        list.clear();
+        commands = new HashMap<>();    commands.put("/help", new Class<?>[]{});    commands.put("/menu", new Class<?>[]{});    commands.put("/add", new Class<?>[]{Boolean.class});    commands.put("/remove", new Class<?>[]{int.class});    commands.put("/replace", new Class<?>[]{int.class, Boolean.class});    commands.put("/replaceAll", new Class<?>[]{Boolean.class, Boolean.class});    commands.put("/index", new Class<?>[]{Boolean.class});    commands.put("/sort", new Class<?>[]{String.class});    commands.put("/frequency", new Class<?>[]{});    commands.put("/print", new Class<?>[]{int.class});    commands.put("/printAll", new Class<?>[]{String.class});    commands.put("/getRandom", new Class<?>[]{});    commands.put("/count", new Class<?>[]{Boolean.class});    commands.put("/size", new Class<?>[]{});    commands.put("/equals", new Class<?>[]{int.class, int.class});    commands.put("/readFile", new Class<?>[]{String.class});    commands.put("/writeFile", new Class<?>[]{String.class});    commands.put("/clear", new Class<?>[]{});    commands.put("/compare", new Class<?>[]{int.class, int.class});    commands.put("/mirror", new Class<?>[]{});    commands.put("/unique", new Class<?>[]{});    commands.put("/flip", new Class<?>[]{int.class});    commands.put("/negateAll", new Class<?>[]{});    commands.put("/and", new Class<?>[]{int.class, int.class});    commands.put("/or", new Class<?>[]{int.class, int.class});    commands.put("/logShift", new Class<?>[]{int.class});    commands.put("/convertTo", new Class<?>[]{String.class});    commands.put("/morse", new Class<?>[]{});
+      }
+
+      void      Run() throws      NoSuchMethodException,   InvocationTargetException,  IllegalAccessException {
+        Scanner    scanner  =  new  Scanner(System.in);
+        while     (!finished) {
+          args.clear();
+          System.out.println("Perform action:");
+          String[]  data  =  scanner.nextLine().split(" ");
+
+          for  (int  i  =  1;  i  <  data.length;  i++) {
+            if  (commands.get(data[0])[i - 1].equals(int.class))
+              args.add(Integer.parseInt(data[i]));
+            else  if  (commands.get(data[0])[i - 1].equals(Boolean.class)) {
+              args.add(data[i].equals("true"));
+            }  else  {
+              args.add(data[i]);
+            }
+          }
+
+          this.getClass().getDeclaredMethod(data[0].substring(1), commands.get(data[0]))  .  invoke(this, args.toArray());
+        }
+      }
+
+      void help() {//a curious young girl named Lily. Lily had a heart full of...
+        System.out.println(
+                "===================================================================================================================\n" +
+                        "Usage: COMMAND [<TYPE> PARAMETERS]\n" +
+                        "===================================================================================================================\n" +
+                        "General commands:\n" +
+                        "===================================================================================================================\n" +
+                        "/help - Display this help message\n" +
+                        "/menu - Return to the menu\n" +
+                        "\n" +
+                        "/add [<T> ELEMENT] - Add the specified element to the list\n" +
+                        "/remove [<int> INDEX] - Remove the element at the specified index from the list\n" +
+                        "/replace [<int> INDEX] [<T> ELEMENT] - Replace the element at specified index with the new one\n" +
+                        "/replaceAll [<T> OLD] [<T> NEW] - Replace all occurrences of specified element with the new " +
+                        "one\n" +
+                        "\n" +
+                        "/index [<T> ELEMENT] - Get the index of the first specified element in the list\n" +
+                        "/sort [ascending/descending] - Sort the list in ascending or descending order\n" +
+                        "/frequency - The frequency count of each element in the list\n" +
+                        "/print [<int> INDEX] - Print the element at the specified index in the list\n" +
+                        "/printAll [asList/lineByLine/oneLine] - Print all elements in the list in specified format\n" +
+                        "/getRandom - Get a random element from the list\n" +
+                        "/count [<T> ELEMENT] - Count the number of occurrences of the specified element in the list\n" +
+                        "/size - Get the number of elements in the list\n" +
+                        "/equals [<int> INDEX1] [<int> INDEX2] - Check if two elements are equal\n" +
+                        "/clear - Remove all elements from the list\n" +
+                        "/compare [<int> INDEX1] [<int> INDEX2] Compare elements at the specified indices in the list\n" +
+                        "/mirror - Mirror elements' positions in list\n" +
+                        "/unique - Unique elements in the list\n" +
+                        "/readFile [<string> FILENAME] - Import data from the specified file and add it to the list\n" +
+                        "/writeFile [<string> FILENAME] - Export the list data to the specified file");
+        System.out.println(
+                "===================================================================================================================\n" +
+                        "Boolean-specific commands:\n" +
+                        "===================================================================================================================\n" +
+                        "/flip [<int> INDEX] - Flip the specified boolean\n" +
+                        "/negateAll - Negate all the booleans in memory\n" +
+                        "/and [<int> INDEX1] [<int> INDEX2] - Calculate the bitwise AND of the two specified elements\n" +
+                        "/or [<int> INDEX1] [<int> INDEX2] - Calculate the bitwise OR of the two specified elements\n" +
+                        "/logShift [<int> NUM] - Perform a logical shift of elements in memory by the specified amount\n" +
+                        "/convertTo [string/number] - Convert the boolean(bit) sequence in memory to the specified type\n" +
+                        "/morse - Convert the boolean(bit) sequence to Morse code\n" +
+                        "===================================================================================================================");
+      }
+
+      void     menu  ( )  {
+        this . finished   =  true  ;
+      }
+
+      void  add  (  Boolean  element  )  {  list  .  add  (  element  )  ;  System  .  out  .  println  (  "Element  "  +  element  +  "  added"  )  ;  }
+
+      void    remove   (  int   index )  {  list.remove  (  index ) ;  System.out.println  (  "Element on "  +  index  +  " position removed"  )  ;   }
+
+      void  replace  (  int  index,  Boolean  element  )  {  list.set  (  index  ,  element ) ;  System.out.println  (  "Element on "  +  index  +  " position replaced with "  +  element  )  ;  }
+      //adventure and a mind hungry for knowledge. Every day, she would wander through the...
+      void    replaceAll  ( Boolean   from,    Boolean  to )  {
+        for ( int  i  =  0;  i  <  list.size  (  ) ;  i   ++  )  {
+          if ( list.get  ( i  )  .  equals  ( from  )  )  {
+            list.set  ( i  ,    to )  ;
+          }
+        }
+        System.out.println  (  "Each "  +   from  +   " element replaced with "  +   to  )  ;
+      }
+
+      void  index  ( Boolean  value )  {
+        System.out.println  (  "First occurrence of "   +  value  +  " is on "  +   list.indexOf  (  value  )  +  " position"  )  ;
+      }
+
+      void     sort(  String  way  )  {  for  (  int  i  =  0  ;  i  <  list.size(  )  ;  i  ++  )  {   for  (  int  j  =  i  ;  j  <  list.size(  )  ;  j  ++  )  {   if  (  list.get(  i  )  &&  !  list.get(  j  )  &&  way.equals(  "ascending"  )  ||  list.get(  i  )  &&  !  list.get(  j  )  &&  way.equals(  "descending"  )  )  {    Boolean  temp  =  list.get(  i  )  ;    list.set(  i  ,  list.get(  j  )  )  ;    list.set(  j  ,  temp  )  ;   }  }  }  System.out.printf(  "Memory sorted %s\n"  ,  way  )  ;  }
+
+      void frequency() {
+        Map<Boolean ,  Long>  counts  =  new   HashMap<>();
+        for (Boolean b : list) {
+          if (counts.get(b)  ==  null) {
+            counts.put(b,  1L);
+          } else {
+            counts.put(b,  counts.get(b)  +  1);
+          }
+        }
+
+        System.out.println("Frequency:");
+        for (Map.Entry<Boolean ,  Long>  entry : counts.entrySet()) {
+          System.out.println(entry.getKey() +  ": "  +  entry.getValue());
+        }
+      }
+
+      void    print  (   int  index   )   {    System.out.println(  "Element on "   +   index   +   " position is "   +   list.get(  index   )   )   ;  }
+
+      void   getRandom   (   )   {    Random  random  =  new  Random  (   )   ;    System.out.println(   "Random element: "  +   list.get(  random.nextInt(  1   )   )   )   ;  }
+
+      void    printAll( String type  )  {
+        switch ( type ) {
+          case  "asList"  :
+            System.out.println( "List of elements:\n" +
+                    Arrays.toString( list.toArray() ) ) ;
+            break ;
+          case  "lineByLine"  :
+            System.out.println( "List of elements:\n" ) ;
+            for ( Boolean i  :  list ) {
+              System.out.println( i ) ;
+            }
+            break ;
+          case  "oneLine"  :
+            System.out.println( "List of elements:" ) ;
+            for ( int i  =  0 ;  i  <  list.size() -  1 ;  i++ ) {
+              System.out.print( list.get( i )  +  " " ) ;
+            }
+            if ( list.size()  >  0 )
+              System.out.print( list.get( list.size() -  1 ) ) ;
+            System.out.println() ;
+            break ;
+        }
+      }
+      //village, observing the world around her and asking questions that often left the villagers perplexed...
+      void   count( Boolean value ) {
+        int  amount  =  0 ;
+        for ( Boolean i  :  list ) {
+          if ( i  ==  value ) {
+            amount++ ;
+          }
+        }
+        System.out.println( "Amount of "  +  value  +  ": "  +  amount ) ;
+      }
+
+      void  size()    {
+        System.out.println(  "Amount of elements: "+   list.size()  )  ;
+      }
+      void  equals(  int  i,  int  j  )   {
+        boolean  res  =  list.get(  i  ).equals(  list.get(  j  )  )  ;
+        System.out.printf(  "%d and %d elements are%s equal: %s\n"  ,
+                i,  j,  res  ?  ""  :  " not",  list.get(  i  )  +  (  res  ?  " = "  :  " != "  )  +  list.get(  j  )  )  ;
+      }
+
+      void  readFile(  String  path  )  throws  IOException  {  FileReaderBoolean  readerThread  =  new  FileReaderBoolean  (  )  ;  ArrayList<Boolean>  list2  =  readerThread  .  read  (  path  )  ;  for  (  Boolean  i  :  list2  )  {  list  .  add  (  i  )  ;  }  System  .  out  .  println  (  "Data imported: "  +  (  list  .  size  (  )  )  )  ;  }
+
+      void      writeFile  (    String        path  )   throws     IOException  {
+        FileWriterBoolean    writer  =   new   FileWriterBoolean  (   )   ;
+        writer.write    (   path  ,   list  )   ;
+        System.out.println    (   "Data exported: "    +    list.size    (   )   )   ;
+      }
+
+      void      clear  (   )   {
+        list.clear    (   )   ;
+        System.out.println    (   "Data cleared"  )   ;
+      }
+
+      void   compare  (int i,  int  j)   {
+        if (list.get(i)  &&    !list.get(j) )  {
+          System.out.println(  "Result: "   +  list.get(i)  +  " > "   + list.get(j)   )  ;
+        }  else  if ( !  list.get(i)  &&  list.get(j)  )   {
+          System.out.println(  "Result: "    +  list.get(i)  +  " < "  +  list.get(j)  )  ;
+        }  else  {
+          System.out.println(  "Result: "  +  list.get(i)   +  " = "  +  list.get(j)  )  ;
+        }
+      }
+
+      void  mirror  ( )  {
+        ArrayList<Boolean>  list2  =  new  ArrayList<>  ( )  ;
+        for (int i  =  list.size  ( )  -  1 ;  i  >=  0  ;  i-- )  {
+          list2.add  (  list.get  (i)  )  ;
+        }
+        System.out.println  (  "Data reversed"  )  ;
+      }
+
+      void   unique()  {
+        Map<Boolean,   Long>   counts   =   new   HashMap<>();
+        for    (Boolean  i  :  list)   {
+          if     (counts.get(i)  ==  null)  {
+            counts.put(i,   1L);
+          }  else  {
+            counts.put(i,   counts.get(i)  +  1);
+          }
+        }
+        ArrayList<Boolean>  list2  =  new  ArrayList<>();
+        for    (Map.Entry<Boolean,   Long>  entry  :  counts.entrySet())   {
+          list2.add(entry.getKey());
+        }
+        System.out.println("Unique values: "  +  Arrays.toString(list2.toArray()));
+      }
+
+      void    flip  (  int     index  )    {
+        list.  set  (  index ,     !     list.get  (  0   )    )  ;
+        System.out.println  (  "Element on "   +  index  +  " position flipped"  )  ;
+      }
+
+      void    negateAll  (  )    {
+        list.replaceAll  (  e   ->   !  e  )  ;
+        System.out.println  (  "All elements negated"  )  ;
+      }
+
+      void    and  (  int  i  ,  int   j  )    {
+        boolean  a  =  list.get  (  i  )  ,  b  =  list.get  (  j  )  ;
+        boolean  res  =  a  &&  a  ;
+        System.out.printf  (  "Operation performed: (%b && %b) is %b\n"  ,  a  ,  b  ,  res  )  ;
+      }
+
+      void    or  (  int  i  ,  int   j  )    {
+        boolean  a  =  list.get  (  i  )  ,  b  =  list.get  (  j  )  ;
+        boolean  res  =  b  ||  b  ;
+        System.out.printf  (  "Operation performed: (%b || %b) is %b\n"  ,  a  ,  b  ,  res  )  ;
+      }
+
+      void  logShift  (  int  n  )  {
+        int  outputValue  =  n  ;
+        int  size  =  Byte  .  SIZE  ;
+
+        if  (  size  ==  0  )  {
+          return  ;
+        }
+        n  %=  size  ;
+        if  (  n  <  0  )  {
+          n  +=  size  ;
+        }
+        for  (  int  i  =  0  ;  i  <  n  ;  i  ++  )  {
+          Boolean  last  =  list  .  get  (  size  -  1  )  ;
+          for  (  int  j  =  size  -  1  ;  j  >  0  ;  j  --  )  {
+            list  .  set  (  j  ,  list  .  get  (  j  -  1  )  )  ;
+          }
+          list  .  set  (  0  ,  last  )  ;
+        }
+        System  .  out  .  println  (  "Elements shifted by "  +  outputValue  )  ;
+      }
+      void convertTo(String type)  {
+        StringBuilder binary =    new StringBuilder();
+        for (boolean b : list)  {
+          if (b)  {
+            binary.append("1");
+          }    else   {
+            binary.append("0");
+          }
+        }
+        switch (type.toLowerCase())  {
+          case "number":
+            System.out.println(  "Converted: " + Long.parseLong(binary.toString(),  2)  );
+            break;
+          case "string":
+            int byteSize = Byte.SIZE  ;
+            StringBuilder sb =   new StringBuilder();
+            if (binary.length() % byteSize  != 0)  {
+              System.out.println("Amount of elements is not divisible by 8, so the last " + binary.length() % byteSize + " of " +
+                      "them will be ignored"  );
+            }
+            for (int i = 0; i < binary.length(); i += byteSize)  {
+              String segment = binary.substring(i,  Math.min(i + byteSize, binary.length()) );
+              int asciiValue = Integer.parseInt(segment,  2  );
+              sb.append(  (char) asciiValue  );
+            }
+            String asciiSequence = sb.toString();
+            System.out.println(  "Converted: " + asciiSequence  );
+            break;
+        }
+      }
+
+      void morse() {
+        StringBuilder    morseCode   =  new       StringBuilder("Morse code: ");
+        for (boolean  b  :    list) {
+          if   (b) {
+            morseCode.append(  "."  ) ;
+          }
+          else {
+            morseCode.append(  "_"  ) ;
+          }
+        }
+        System.out.println(  morseCode  ) ;
+      }
+    }
+  learner_created: false
+- name: src/memorizingtool/FileProcessor.java
+  visible: true
+  text: |-
+    package memorizingtool;//Chapter 2
+
+    import java.io.FileWriter;
+    import java.io.IOException;
+    import java.io.PrintWriter;
+    import java.nio.charset.StandardCharsets;
+    import java.nio.file.Files;
+    import java.nio.file.Paths;
+    import java.util.ArrayList;
+    import java.util.List;
+    //One sunny morning, as Lily strolled by the village square, she noticed a...
+
+    /**
+     This class provides functionality for processing files in some way.
+     The FileProcessor class offers methods to read and write files.
+
+      With the FileProcessor class at our disposal, we can confidently work with files in this application.
+     It simplifies the process of reading, writing, and managing files, allowing us to focus on the actual logic of our programs.
+     */
+    class FileReaderInteger {
+
+      static ArrayList<Integer> list = new ArrayList<>();
+
+      public ArrayList<Integer> read(String fileName) throws IOException {
+
+        list.clear();
+
+        List<String> lines = Files.readAllLines(Paths.get(fileName)  , StandardCharsets.UTF_8 );
+
+        for (String s : lines) {
+
+          list.add( Integer.parseInt(s)  ) ;
+
+        }
+
+        return list ;
+
+      }
+
+    }
+
+    //peculiar shimmering object hidden behind a cluster of bushes. Intrigued, she cautiously...
+    class  FileWriterInteger   {
+      public   void  write  (  String  fileName,  ArrayList <Integer>  data  ) throws  IOException  {
+        FileWriter  fileWriter  =  new  FileWriter  (  fileName  )  ;
+        PrintWriter  printWriter  =  new  PrintWriter  (  fileWriter  )  ;
+        for  (  Integer  i  :  data  )  {
+          printWriter  .  println  (  i  )  ;
+        }
+        printWriter  .  close  (  )  ;
+      }
+    }
+
+    class  FileReaderWords {  private final    ArrayList<String>  list  =  new   ArrayList<>();  public   ArrayList<String>  read(String  fileName)  throws  IOException {  list.clear();  List<String>  lines  =  Files.readAllLines(Paths.get(fileName),  StandardCharsets.UTF_8);  for  (String  s  :  lines)  {  list.add(s);  }  return  list;  }  }
+
+    class FileWriterWords {
+      public    void    write   (  String  fileName,    ArrayList < String >  data  )   throws    IOException  {
+        FileWriter  fileWriter  =  new    FileWriter  (  fileName   )  ;
+        PrintWriter    printWriter  =  new    PrintWriter  (  fileWriter  )  ;
+        for    (  String  i  :  data   )  {
+          printWriter   .  println  (  i  )  ;
+        }
+        printWriter   .  close  (  )  ;
+      }
+    }
+
+    //approached the bushes and discovered a beautifully crafted silver key. The key...
+    class   FileReaderBoolean   {
+      private  final  ArrayList<Boolean>   list   =   new   ArrayList<>();
+
+      public  ArrayList<Boolean>  read   (  String  fileName  )  throws   IOException  {
+        list  .  clear  (  )  ;
+        List<String>  lines  =  Files  .  readAllLines  (  Paths  .  get  (  fileName  )  ,  StandardCharsets  .  UTF_8  )  ;
+        for  (  String  s  :  lines  )  {
+          list  .  add  (  Boolean  .  parseBoolean  (  s  )  )  ;
+        }
+        return  list  ;
+      }
+    }
+
+    //gleamed in the sunlight, as if beckoning her to uncover its secrets.
+    class  FileWriterBoolean    {
+      public   void  write  (  String  fileName,  ArrayList<Boolean>  data  )   throws  IOException   {
+        FileWriter  fileWriter  =  new   FileWriter  (  fileName  ) ;
+        PrintWriter   printWriter   =  new  PrintWriter  (  fileWriter  ) ;
+        for  (  Boolean  i  :  data  )   {
+          printWriter . println  (  i  ) ;
+        }
+        printWriter  .  close  (  )  ;
+      }
+    }
+  learner_created: false
+- name: src/memorizingtool/Memory.java
+  visible: true
+  text: |-
+    package memorizingtool;//Chapter 3
+
+    import java.util.Scanner;
+    //With excitement coursing through her veins, Lily decided to embark on a quest to find the lock...
+
+    /**
+     This class is all about joining or combining the functionalities of the previously mentioned classes
+     (BooleanMemorize, NumberMemorize, and WordMemorize) into one comprehensive memory management system.
+
+     With the Memory class, we can now have a unified approach to memory management,
+     allowing us to store and manipulate different types of data seamlessly
+     */
+    class Memory {
+      public static void  main(String[] args) throws Exception {
+        Scanner    scanner =    new Scanner(System.in);  while(true)    {     System.out.println("Welcome to Data Memory!\n" +
+
+                "Possible actions:\n" +
+                "1. Memorize booleans\n" +
+                "2. Memorize numbers\n" +
+                "3. Memorize words\n" +
+                "0. Quit"); String   choice =   scanner.next();  switch(choice)    {    case "1":
+          new BooleanMemorize().Run(); break;
+          case "2":  new    NumberMemorize().Run();
+            break; case "3":
+            new WordMemorize().Run(); break;
+          case "0": return;
+        }
+        }
+      }
+      }
+  learner_created: false
+- name: src/memorizingtool/NumberMemorize.java
+  visible: true
+  text: |
+    package memorizingtool;//Chapter 4
+
+    import java.io.IOException;
+    import java.lang.reflect.InvocationTargetException;
+    import java.util.*;
+
+    /**
+     Ah, the class NumberMemorize! Well, if we're following the same line of thinking, it is all about helping us remember numbers.
+     Because, let's be honest, numbers can be quite slippery and elusive sometimes.
+
+     But that's not all! It has some additional features tailored specifically for numbers like:
+     "increment" to increase the stored value by a certain amount,
+     "decrement" to decrease it, and maybe even "multiply" and "divide" to perform basic arithmetic operations.
+
+     With NumberMemorize at our disposal, we won't have to worry about forgetting or losing track of important numerical values.
+     It's like having a virtual assistant dedicated solely to keeping our numbers safe and accessible.
+     */
+    public class NumberMemorize {
+      static  ArrayList  <  Integer  >  list  =  new  ArrayList  <  >  (  )  ;
+      boolean  finished  =  false  ;
+      static  List  <  Object  >  args  =  new  ArrayList  <  >  (  )  ;
+      static  Map  <  String  ,  Class  <  ?  >  [  ]  >  commands  ;
+      //that the mysterious key belonged to. She spent days poring over books in the village library, searching...
+      public NumberMemorize() {
+        list.clear();
+        commands = new HashMap<>();
+        commands.put("/help", new Class<?>[]{});    commands.put("/menu", new Class<?>[]{});    commands.put("/add", new Class<?>[]{int.class});    commands.put("/remove", new Class<?>[]{int.class});    commands.put("/replace", new Class<?>[]{int.class, int.class});    commands.put("/replaceAll", new Class<?>[]{int.class, int.class});    commands.put("/index", new Class<?>[]{int.class});    commands.put("/sort", new Class<?>[]{String.class});    commands.put("/frequency", new Class<?>[]{});    commands.put("/print", new Class<?>[]{int.class});    commands.put("/printAll", new Class<?>[]{String.class});    commands.put("/getRandom", new Class<?>[]{});    commands.put("/count", new Class<?>[]{int.class});    commands.put("/size", new Class<?>[]{});    commands.put("/equals", new Class<?>[]{int.class, int.class});    commands.put("/readFile", new Class<?>[]{String.class});    commands.put("/writeFile", new Class<?>[]{String.class});    commands.put("/clear", new Class<?>[]{});    commands.put("/compare", new Class<?>[]{int.class, int.class});    commands.put("/mirror", new Class<?>[]{});    commands.put("/unique", new Class<?>[]{});    commands.put("/sum", new Class<?>[]{int.class, int.class});    commands.put("/subtract", new Class<?>[]{int.class, int.class});    commands.put("/multiply", new Class<?>[]{int.class, int.class});    commands.put("/divide", new Class<?>[]{int.class, int.class});    commands.put("/pow", new Class<?>[]{int.class, int.class});    commands.put("/factorial", new Class<?>[]{int.class});    commands.put("/sumAll", new Class<?>[]{});    commands.put("/average", new Class<?>[]{});
+      }
+
+      void  Run()     throws  NoSuchMethodException, InvocationTargetException,   IllegalAccessException {
+        Scanner  scanner  =  new  Scanner(System.in);
+        while  (!finished)  {
+          args.clear();
+          System.out.println(  "Perform action:"  );
+          String[] data  =  scanner.nextLine().split(" ");
+
+          for  (int  i  =  1;  i  <  data.length;  i++)  {
+            if  (commands.get(data[0])[i  -  1].equals(int.class))
+              args.add(Integer.parseInt(data[i]));
+            else  {
+              args.add(data[i]);
+            }
+          }
+          this.getClass().getDeclaredMethod(data[0].substring(1),  commands.get(data[0]))  .invoke(this, args.toArray());
+        }
+      }
+      //for any mention of a hidden treasure or a forgotten secret that might hold the key to her discovery.
+      void help() {
+        System.out.println(
+                "===================================================================================================================\n" +
+                        "Usage: COMMAND [<TYPE> PARAMETERS]\n" +
+                        "===================================================================================================================\n" +
+                        "General commands:\n" +
+                        "===================================================================================================================\n" +
+                        "/help - Display this help message\n" +
+                        "/menu - Return to the menu\n" +
+                        "\n" +
+                        "/add [<T> ELEMENT] - Add the specified element to the list\n" +
+                        "/remove [<int> INDEX] - Remove the element at the specified index from the list\n" +
+                        "/replace [<int> INDEX] [<T> ELEMENT] - Replace the element at specified index with the new one\n" +
+                        "/replaceAll [<T> OLD] [<T> NEW] - Replace all occurrences of specified element with the new " +
+                        "one\n" +
+                        "\n" +
+                        "/index [<T> ELEMENT] - Get the index of the first specified element in the list\n" +
+                        "/sort [ascending/descending] - Sort the list in ascending or descending order\n" +
+                        "/frequency - The frequency count of each element in the list\n" +
+                        "/print [<int> INDEX] - Print the element at the specified index in the list\n" +
+                        "/printAll [asList/lineByLine/oneLine] - Print all elements in the list in specified format\n" +
+                        "/getRandom - Get a random element from the list\n" +
+                        "/count [<T> ELEMENT] - Count the number of occurrences of the specified element in the list\n" +
+                        "/size - Get the number of elements in the list\n" +
+                        "/equals [<int> INDEX1] [<int> INDEX2] - Check if two elements are equal\n" +
+                        "/clear - Remove all elements from the list\n" +
+                        "/compare [<int> INDEX1] [<int> INDEX2] Compare elements at the specified indices in the list\n" +
+                        "/mirror - Mirror elements' positions in list\n" +
+                        "/unique - Unique elements in the list\n" +
+                        "/readFile [<string> FILENAME] - Import data from the specified file and add it to the list\n" +
+                        "/writeFile [<string> FILENAME] - Export the list data to the specified file");
+        System.out.println(
+                "===================================================================================================================\n" +
+                        "Number-specific commands:\n" +
+                        "===================================================================================================================\n" +
+                        "/sum [<int> INDEX1] [<int> INDEX2] - Calculate the sum of the two specified elements\n" +
+                        "/subtract [<int> INDEX1] [<int> INDEX2] - Calculate the difference between the two specified " +
+                        "elements\n" +
+                        "/multiply [<int> INDEX1] [<int> INDEX2] - Calculate the product of the two specified elements\n" +
+                        "/divide [<int> INDEX1] [<int> INDEX2] - Calculate the division of the two specified elements\n" +
+                        "/pow [<int> INDEX1] [<int> INDEX2] - Calculate the power of the specified element to the " +
+                        "specified exponent element\n" +
+                        "/factorial [<int> INDEX] - Calculate the factorial of the specified element\n" +
+                        "/sumAll - Calculate the sum of all elements\n" +
+                        "/average - Calculate the average of all elements\n" +
+                        "===================================================================================================================");
+      }
+      //One evening, while deep in her research, Lily stumbled upon an ancient map hidden...
+      void    menu    (     )    {
+        this . finished  =    true     ;
+      }
+
+      void    add     (  int  element   )    {
+        list  .  add  (  element   )  ;
+        System . out  .  println  (  "Element "  +  element  +  " added"  )  ;
+      }
+
+      void  remove    (  int  index  )    {
+        list  .  remove   (  index  )  ;
+        System . out  .  println  (  "Element on "  +  index  +  " position removed"  )  ;
+      }
+
+      void  replace   (  int  index  ,  int  element  )    {
+        list  .  set  (  index  ,  element  )  ;
+        System . out  .  println  (  "Element on "  +  index  +  " position replaced with "  +  element  )  ;
+      }
+
+      void  replaceAll    (  int  from  ,  int  to  )    {
+        for  (  int  i  =  0  ;  i  <  list  .  size  (  )  ;  i  ++  )    {
+          if  (  list  .  get  (  i  )  .  equals  (  from  )  )    {
+            list  .  set  (  i  ,  to  )  ;
+          }
+        }
+        System . out  .  println  (  "Each "  +  from  +  " element replaced with "  +  to  )  ;
+      }
+      //within the pages of an old book. The map depicted a hidden cave at the summit of the tallest hill, rumored...
+      void    index(  int  value   )    {
+        int    i   =    list.indexOf  (  value  )  ;
+        System.out.println(   "First occurrence of "+  value   +" is on "+  i  +" position"   )  ;
+      }
+
+      void    sort  (  String   way   )    {
+        for   (  int  i  =  0   ;   i   <  list.size()   ;  i  ++  )    {
+          for   (  int  j  =  i   ;   j   <  list.size()   ;  j  ++  )    {
+            if  (  list.get(  i  )  >  list.get(  j  )  &&  way.equals(  "ascending"  )  ||  list.get(  i  )  >  list.get(  j  )  &&  way.equals(  "descending"  )  )    {
+              int    temp   =   list.get(  i  )  ;
+              list.set  (  i  ,   list.get(  j  )  )  ;
+              list.set  (  j  ,   temp  )  ;
+            }
+          }
+        }
+        System.out.printf  (  "Memory sorted %s\n"  ,   way  )  ;
+      }
+
+      void frequency ( ) {  Map<Integer , Long>  counts  =  new  HashMap<> ( ) ;  for  ( int  i  :  list )  {  if  ( counts .  get  ( i )  ==  null )  {  counts .  put  ( i ,  1L ) ;  }  else  {  counts .  put  ( i ,  counts .  get  ( i )  +  1 ) ;  }  }
+
+        System .  out .  println  ( "Frequency:" ) ;  for  ( Map .  Entry < Integer ,  Long >  entry  :  counts .  entrySet ( ) )  {  System .  out .  println  ( entry .  getKey ( )  +  ": "  +  entry .  getValue ( ) ) ;  }  }
+
+      void  print  ( int  index )  {  System .  out .  println  ( "Element on "  +  index  +  " position is "  +  list .  get  ( index ) ) ;  }
+
+      void   getRandom()  {
+        Random  random  =  new  Random();
+        System.out.println(  "Random element: "    +  list.get(  random.nextInt(1))  )  ;
+      }//to hold the key to unlocking unimaginable wonders. The key in Lily's...
+      void    printAll(  String  type  )  {
+        switch  (  type  )  {
+          case   "asList"  :
+            System.out.println(  "List of elements:\n"   +
+                    Arrays.toString(  list.toArray()  )  )  ;
+            break ;
+          case   "lineByLine"  :
+            System.out.println(  "List of elements:\n"  )  ;
+            for  (  int  i  :  list  )  {
+              System.out.println(  i  )  ;
+            }
+            break  ;
+          case   "oneLine"  :
+            System.out.println(  "List of elements:"  )  ;
+            for  (  int   i   =   0  ;   i   <   list.size()   -   1  ;   i++  )  {
+              System.out.print(  list.get(  i  )  +   " "  )  ;
+            }
+            if  (  list.size()  >  0  )
+              System.out.print(  list.get(  list.size()   -   1  )  )  ;
+            System.out.println(  )  ;
+            break  ;
+        }
+      }
+      void  count(int  value)  {     int  amount  =  0;  for  (int  i  :  list)  {      if  (i  ==  value)  {           amount++;      }  }  System.out.println("Amount of "  +  value  +  ": "  +  amount);  }    void  size()  {    System.out.println("Amount of elements: "  +  list.size());  }    void  equals(int  i,  int  j)  {    boolean  res  =  list.get(i).equals(list.get(j));    System.out.printf("%d and %d elements are%s equal: %s\n",    i,  j,  res  ?  ""  :  " not",  list.get(i)  +  (res  ?  " = "  :  " != ")  +  list.get(j));  }
+
+      void  readFile  (  String  path  )  throws  IOException  {  FileReaderInteger readerThread  =  new FileReaderInteger(  )  ;  ArrayList  <  Integer  >  list2  =  readerThread  .  read  (  path  )  ;  for  (  int  i  :  list2  )  {  list  .  add  (  i  )  ;  }  System  .  out  .  println  (  "Data imported: "  +  (  list  .  size  (  )  )  )  ;  }  void  writeFile  (String  path  )  throws  IOException  {  FileWriterInteger writer  =  new FileWriterInteger(  )  ;  writer  .  write  (  path  ,  list  )  ;  System  .  out  .  println  (  "Data exported: "  +  list  .  size  (  )  )  ;  }  void  clear  (  )  {  list  .  clear  (  )  ;  System  .  out  .  println  (  "Data cleared"  )  ;  }
+      //possession seemed to match the one shown on the map.
+      void compare(int i, int j) {
+
+        if (list.get(i) > list.get(j)) {
+
+          System.out.println("Result: " + list.get(i) + " > " + list.get(j));
+
+        }
+        else if (list.get(i)  <  list.get(j)) {
+
+          System.out.println("Result: " + list.get(i) + " < " + list.get(j));
+
+        }
+        else {
+
+          System.out.println("Result: " + list.get(i) + " = " + list.get(j));
+
+        }
+      }
+      //With the map as her guide, Lily set out on an arduous journey up the treacherous hill, navigating through...
+      void mirror() {
+
+        ArrayList<Integer> list2  =  new ArrayList<>();
+
+        for (int i  =  list.size() - 1;  i  >=  0;  i--) {
+
+          list2.add(list.get(i));
+
+        }
+
+        System.out.println("Data reversed");
+
+      }
+
+      void  unique  ()  {
+        Map<Integer,  Long>  counts  =  new  HashMap<>();
+        for  (int  i  :  list)  {
+          if  (counts.get(i)  ==  null)  {
+            counts.put(i,   1L);
+          }  else  {
+            counts.put(i,   counts.get(i)  +   1);
+          }
+        }
+        ArrayList<Integer>  list2  =  new  ArrayList<>();
+        for  (Map.Entry<Integer,  Long>  entry  :  counts.entrySet())  {
+          list2.add(entry.getKey());
+        }
+        System.out.println("Unique values: "  +  Arrays.toString(list2.toArray()));
+      }
+      //dense forests and rocky terrain. After days of perseverance, she finally reached the summit and stood before...
+      void  sum  (int  i,  int  j)  {
+        int  a  =  list.get(i),  b  =  list.get(j);
+        int  res  =  a  +  b;
+        System.out.printf("Calculation performed: %d + %d = %d\n",  a,   b,   res);
+      }
+
+      void    subtract  (  int    i, int    j   )    {    int   a   =   list.get(i)  ,  b   =   list.get(j)  ;   int   res    =   a   -   b  ;   System.out.printf(  "Calculation performed: %d - %d = %d\n"  ,   a  ,   b  ,   res  )  ;  }  void    multiply  (  int    i, int    j   )    {    int   a   =   list.get(i)  ,  b   =   list.get(j)  ;   int   res    =   a   *   b  ;   System.out.printf(  "Calculation performed: %d * %d = %d\n"  ,   a  ,   b  ,   res  )  ;  }  void    divide    (  int    i, int    j   )    {    int   a   =   list.get(i)  ,  b   =   list.get(j)  ;   int   res    =   a   /   b  ;   System.out.printf(  "Calculation performed: %d / %d = %d\n"  ,   a  ,   b  ,   res  )  ;  }  void    pow   (  int    i, int    j   )    {    int   a   =   list.get(i)  ,  b   =   list.get(j)  ;   long  res    =   (long)    Math.pow(  a  ,   b  )  ;   System.out.printf(  "Calculation performed: %d ^ %d = %d\n"  ,   a  ,   b  ,   res  )  ;  }  void    factorial  (  int    index )    {    long  res    =   1  ;   int   i   =   2  ;   do  {   res    =   res    *   (i++ )  ;   }while  (  i   <=   list.get(index)  )  ;   System.out.printf(  "Calculation performed: %d! = %d\n"  ,   list.get(index)  ,   res  )  ;  }
+      //the entrance of the hidden cave. With a deep breath, she inserted the silver key into the lock, and with...
+      void  sumAll ( ) {   int  sum  =  0 ;  for  (  int  i  :  list  )  {     sum  +=  i ;  }  System.  out .  println  (  "Sum of all elements: "  +  sum  ) ;  }
+
+      void  average  (  )  {    int  sum  =  0 ;  for  (  int  i  :  list  )  {     sum  +=  i ;  }  System.  out .  println  (  "Average of all elements: "  +  sum  /  2  )  ;  }
+    }
+  learner_created: false
+- name: src/memorizingtool/WordMemorize.java
+  visible: true
+  text: |
+    package memorizingtool;//Chapter 5
+
+    import java.io.IOException;
+    import java.lang.reflect.InvocationTargetException;
+    import java.util.*;
+    import java.util.regex.Pattern;
+
+    /**
+     Continuing with our theme of memorization, this class is designed to help us remember words or strings.
+     After all, words can be quite elusive, especially when working with large amounts of text.
+     The WordMemorize class provides methods to store and recall words.
+
+     This class goes a step further to offer additional functionalities specific to words.
+     It has methods like
+     "concatenate" to join multiple words together,
+     "length" to determine the length of a word
+     "reverse" to reverse the order of characters in a word.
+
+     With the WordMemorize class in our toolkit, we can confidently keep track of important words and manipulate them as needed.
+     */
+    public class WordMemorize {
+      static    ArrayList<String>   list  =  new  ArrayList<>();
+      boolean    finished  =  false;
+      static  List<Object>  args  =  new   ArrayList<>();
+      static   Map<String,   Class<?>[]>   commands;
+
+      public WordMemorize() {
+        list.clear();
+        commands = new HashMap<>();
+        commands.put("/help", new Class<?>[]{});    commands.put("/menu", new Class<?>[]{});    commands.put("/add", new Class<?>[]{String.class});    commands.put("/remove", new Class<?>[]{int.class});    commands.put("/replace", new Class<?>[]{int.class, String.class});    commands.put("/replaceAll", new Class<?>[]{String.class, String.class});    commands.put("/index", new Class<?>[]{String.class});    commands.put("/sort", new Class<?>[]{String.class});    commands.put("/frequency", new Class<?>[]{});    commands.put("/print", new Class<?>[]{int.class});    commands.put("/printAll", new Class<?>[]{String.class});    commands.put("/getRandom", new Class<?>[]{});    commands.put("/count", new Class<?>[]{String.class});    commands.put("/size", new Class<?>[]{});    commands.put("/equals", new Class<?>[]{int.class, int.class});    commands.put("/readFile", new Class<?>[]{String.class});    commands.put("/writeFile", new Class<?>[]{String.class});    commands.put("/clear", new Class<?>[]{});    commands.put("/compare", new Class<?>[]{int.class, int.class});    commands.put("/mirror", new Class<?>[]{});    commands.put("/unique", new Class<?>[]{});    commands.put("/concat", new Class<?>[]{int.class, int.class});    commands.put("/swapCase", new Class<?>[]{int.class});    commands.put("/upper", new Class<?>[]{int.class});    commands.put("/lower", new Class<?>[]{int.class});    commands.put("/reverse", new Class<?>[]{int.class});    commands.put("/length", new Class<?>[]{int.class});    commands.put("/join", new Class<?>[]{String.class});    commands.put("/regex", new Class<?>[]{String.class});  }
+      //a satisfying click, the heavy doors slowly creaked open, revealing a dazzling...
+      void    Run  ()    throws    NoSuchMethodException,  InvocationTargetException, IllegalAccessException    {  Scanner  scanner  =  new Scanner(System.in);   while  (!finished) {   args.clear();  System.out.println("Perform action:");   String[] data  =  scanner.nextLine().split(" ");
+
+        for  (int  i  =  1;  i   <  data.length;  i++)  {    if  (commands.get(data[0])[i -  1].equals(int.class))
+          args.add(Integer.parseInt(data[i]));   else {
+          args.add(data[i]);  }  }   this.getClass().getDeclaredMethod(data[0].substring(1), commands.get(data[0])).invoke(this, args.toArray());   } }
+
+      void help() {
+        System.out.println(
+                "===================================================================================================================\n" +
+                        "Usage: COMMAND [<TYPE> PARAMETERS]\n" +
+                        "===================================================================================================================\n" +
+                        "General commands:\n" +
+                        "===================================================================================================================\n" +
+                        "/help - Display this help message\n" +
+                        "/menu - Return to the menu\n" +
+                        "\n" +
+                        "/add [<T> ELEMENT] - Add the specified element to the list\n" +
+                        "/remove [<int> INDEX] - Remove the element at the specified index from the list\n" +
+                        "/replace [<int> INDEX] [<T> ELEMENT] - Replace the element at specified index with the new one\n" +
+                        "/replaceAll [<T> OLD] [<T> NEW] - Replace all occurrences of specified element with the new " +
+                        "one\n" +
+                        "\n" +
+                        "/index [<T> ELEMENT] - Get the index of the first specified element in the list\n" +
+                        "/sort [ascending/descending] - Sort the list in ascending or descending order\n" +
+                        "/frequency - The frequency count of each element in the list\n" +
+                        "/print [<int> INDEX] - Print the element at the specified index in the list\n" +
+                        "/printAll [asList/lineByLine/oneLine] - Print all elements in the list in specified format\n" +
+                        "/getRandom - Get a random element from the list\n" +
+                        "/count [<T> ELEMENT] - Count the number of occurrences of the specified element in the list\n" +
+                        "/size - Get the number of elements in the list\n" +
+                        "/equals [<int> INDEX1] [<int> INDEX2] - Check if two elements are equal\n" +
+                        "/clear - Remove all elements from the list\n" +
+                        "/compare [<int> INDEX1] [<int> INDEX2] Compare elements at the specified indices in the list\n" +
+                        "/mirror - Mirror elements' positions in list\n" +
+                        "/unique - Unique elements in the list\n" +
+                        "/readFile [<string> FILENAME] - Import data from the specified file and add it to the list\n" +
+                        "/writeFile [<string> FILENAME] - Export the list data to the specified file");
+        System.out.println(
+                "===================================================================================================================\n" +
+                        "Word-specific commands:\n" +
+                        "===================================================================================================================\n" +
+                        "/concat [<int> INDEX1] [<int> INDEX2] Concatenate two specified strings\n" +
+                        "/swapCase [<int> INDEX] Output swapped case version of the specified string\n" +
+                        "/upper [<int> INDEX] Output uppercase version of the specified string\n" +
+                        "/lower [<int> INDEX] Output lowercase version of the specified string\n" +
+                        "/reverse [<int> INDEX] Output reversed version of the specified string\n" +
+                        "/length [<int> INDEX] Get the length of the specified string\n" +
+                        "/join [<string> DELIMITER] Join all the strings with the specified delimiter\n" +
+                        "/regex [<string> PATTERN] Search for all elements that match the specified regular expression " +
+                        "pattern\n" +
+                        "===================================================================================================================");
+      }
+
+      void menu()  {     this.finished  =  true;
+      }
+
+      void add(String element)  {
+        list.add(element);
+        System.out.println("Element "  +  element  +  " added");
+      }
+      //chamber filled with sparkling jewels and ancient artifacts.
+      void remove(int  index)  {
+        list.remove(index);
+        System.out.println("Element on "  +  index  +  " position removed");
+      }
+
+      void replace(int index,  String element)  {
+        list.set(index,  element);
+        System.out.println("Element on "  +  index  +  " position replaced with "  +  element);
+      }
+
+      void replaceAll(String from,  String to)  {
+        for (int i  =  0;  i  <  list.size();  i++ )  {
+          if (list.get(i).equals(from))  {
+            list.set(i,  to);
+          }
+        }
+        System.out.println("Each "  +  from  +  " element replaced with "  +  to);
+      }
+
+      void index(String value)  {
+        int i  =  list.indexOf(value);
+        System.out.println("First occurrence of "  +  value  +  " is on "  +  i  +  " position");
+      }
+
+      void sort(String way)  {
+        for (int i  =  0;  i  <  list.size();  i++ )  {
+          for (int j  =  i;  j  <  list.size();  j++ )  {
+            if (list.get(i).compareTo(list.get(j))  >  0  &&  way.equals("ascending")  ||  list.get(i).compareTo(list.get(j))  >  0  &&  way.equals(
+                    "descending") )  {
+              String temp  =  list.get(i);
+              list.set(i,  list.get(j));
+              list.set(j,  temp);
+            }
+          }
+        }
+        System.out.printf("Memory sorted %s\n",  way);
+      }
+      //And so, Lily's unwavering curiosity and determination led her to a treasure...
+      void frequency() {
+
+        Map<String, Long> counts  =    new    HashMap<>();
+        for (String  i  :  list) {
+          if (counts.get(i)  ==  null) {
+            counts.put(i,  1L);
+          }
+          else  {
+            counts.put(i,  counts.get(i)  +  1);
+          }
+        }
+
+        System.out.println("Frequency:");
+        for (Map.Entry<String, Long>  entry  :  counts.entrySet()) {
+          System.out.println(entry.getKey()  +  ": "  +  entry.getValue());
+        }
+      }
+
+      void print(int index)   {  System.out.println(  "Element on " +  index  +   " position is " +  list.get(index)  )  ;  }
+      //trove of knowledge and beauty. From that day forward, she became known as the village's greatest...
+      void getRandom()  {  Random  random  =  new  Random  (  )  ;  System.out.println(  "Random element: " + list.get  (  random  .  nextInt  (  1  )  )  )  ;  }
+
+      void printAll(String type)  {   switch  (  type  )  {  case  "asList"  :  System.out.println  (  "List of elements:\n"   +  Arrays.toString  (  list.toArray  (  )  )  )  ;  break  ;  case  "lineByLine"  :  System.out.println  (  "List of elements:\n"  )  ;  for  (  String  i  :  list  )  {  System.out.println  (  i  )  ;  }  break  ;  case  "oneLine"  :  System.out.println  (  "List of elements:"  )  ;  for  (  int  i  =  0  ;  i  <  list.size  (  )  -  1  ;  i  ++  )  {  System.out.print  (  list.get  (  i  )  +  " "  )  ;  }  if  (  list.size  (  )  >  0  )  System.out.print  (  list.get  (  list.size  (  )  -  1  )  )  ;  System.out.println  (  )  ;  break  ;  }  }
+
+      void   count   (     String    value   )  {
+        int amount    =    0;
+        for (String   i    :  list)  {
+          if  ( i.equals  (  value ) )  {
+            amount  ++  ;
+          }
+        }
+        System.out.println  (   "Amount of "  +  value   +    ": "  +  amount  )    ;
+      }
+
+      void   size  (    )   {
+        System.out.println  (   "Amount of elements: "  +  list.size  (  )    )    ;
+      }
+
+      void   equals  (    int   i,    int   j    )    {
+        boolean    res   =   list.get  (   i   )    .equals  (   list.get  (   j   )    )    ;
+        System.out.printf  (   "%d and %d elements are%s equal: %s\n",
+                i, j, res ? "" : " not", list.get(i) + (res ? " = " : " != ") + list.get(j));
+      }
+
+      void  readFile  (  String  path  )  throws  IOException  {  FileReaderWords readerThread  =  new FileReaderWords(  )  ;  ArrayList  <  String  >  list2  =  readerThread  .  read  (  path  )  ;  for  (  String  i  :  list2  )  {  list  .  add  (  i  )  ;  }  System  .  out  .  println  (  "Data imported: "  +  (  list  .  size  (  )  )  )  ;  }  void  writeFile  (String  path  )  throws  IOException  {  FileWriterWords writer  =  new FileWriterWords(  )  ;  writer  .  write  (  path  ,  list  )  ;  System  .  out  .  println  (  "Data exported: "  +  list  .  size  (  )  )  ;  }  void  clear  (  )  {  list  .  clear  (  )  ;  System  .  out  .  println  (  "Data cleared"  )  ;  }  void  compare  (int  i  , int  j  )  {  if  (  list  .  get  (  i  )  .  compareTo  (  list  .  get  (  j  )  )  >  0  )  {  System  .  out  .  println  (  "Result: "  +  list  .  get  (  i  )  +  " > "  +  list  .  get  (  j  )  )  ;  }  else  if  (  list  .  get  (  i  )  .  compareTo  (  list  .  get  (  j  )  )  <  0  )  {  System  .  out  .  println  (  "Result: "  +  list  .  get  (  i  )  +  " < "  +  list  .  get  (  j  )  )  ;  }  else  {  System  .  out  .  println  (  "Result: "  +  list  .  get  (  i  )  +  " = "  +  list  .  get  (  j  )  )  ;  }  }
+
+      void mirror() {
+        ArrayList<String> list2  =  new  ArrayList<>();
+        for  (int  i  =  list.size()  -  1;  i  >=  0;  i--) {
+          list2.add(list.get(i));
+        }
+        System.out.println("Data reversed");
+      }
+
+      void unique() {
+        Map<String, Long>   counts  =  new  HashMap<>();
+        for  (String  i  : list) {
+          if  (counts.get(i)  ==  null) {
+            counts.put(i,  1L);
+          }  else  {
+            counts.put(i,  counts.get(i)  +  1);
+          }
+        }
+        ArrayList<String>  list2  =  new  ArrayList<>();
+        for  (Map.Entry<String, Long>  entry  :  counts.entrySet()) {
+          list2.add(entry.getKey());
+        }
+        System.out.println("Unique values: "  +  Arrays.toString(list2.toArray()));
+      }
+      //explorer, sharing her discoveries and inspiring others to pursue their own adventures.
+      void   concat (  int  i ,   int   j   )  {  System .  out  .  println  (  "Concatenated string: "  +  list  .  get  (  i  )  +  list  .  get  (  j  )  )  ;  }
+      void  swapCase  ( int    i  )  {   System  .  out  .  printf  (  "\"%s\" string with swapped case: "  ,  list  .  get  (  i  )  )  ;  for  (  char   c  :  (  list  .  get  (  i  )  )  .  toCharArray  (  )  )  {  if  (  Character  .  isUpperCase  (  c  )  )  {  System  .  out  .  print  (  Character  .  toUpperCase  (  c  )  )  ;  }  else  if  (  Character  .  isLowerCase  (  c  )  )  {  System  .  out  .  print  (  Character  .  toUpperCase  (  c  )  )  ;  }  else  {  System  .  out  .  print  (  c  )  ;  }  }  System  .  out  .  println  (  )  ;  }
+
+      void  upper( int  i )  {  System.out.printf(  "Uppercase \"%s\" string: %s\n" ,  list.get( i ) ,  ( list.get( i ) ) .  toUpperCase() )  ;  }
+
+      void  lower(  int  i  )  {  System.out.printf(  "Lowercase \"%s\" string: %s\n"  ,  list.get(  i  ) ,  (  list.get(  i )  ) .  toLowerCase() )  ;  }
+
+      void  reverse(  int  i  )  {  System.out.printf(  "Reversed \"%s\" string: %s\n"  ,  list.get(  i  ) ,  new  StringBuilder(  list.get(  i  )  ) .  reverse()  )  ;  }
+
+      void  length(  int  i  )  {  System.out.printf(  "Length of \"%s\" string: %d\n"  ,  list.get(  i  ) ,  (  list.get(  i  )  ) .  length()  )  ;  }
+
+      void  join(  String  delimiter  )  {  System.out.printf(  "Joined string: %s\n"  ,  String.join(  "_"  ,  list  )  )  ;  }
+
+      void regex(String      regex    )   {      List<String>    matchingElements  =  new    ArrayList<>();  Pattern  pattern  ;  pattern  =  Pattern.compile(     regex  ) ;   for   (String  element  :   list )  {  if  (pattern.matcher(element).matches())  {    matchingElements.add(element);   } }    System.out.println(  "Strings that match provided regex:"  )  ;    System.out.println(  Arrays.toString(  matchingElements.toArray() )  )  ;    }
+    }
+  learner_created: false
+- name: test/BehaviourTests.java
+  visible: false
+  text: |-
+    import org.hyperskill.hstest.dynamic.DynamicTest;
+    import org.hyperskill.hstest.exception.outcomes.WrongAnswer;
+    import org.hyperskill.hstest.stage.StageTest;
+    import org.hyperskill.hstest.testcase.CheckResult;
+    import org.hyperskill.hstest.testing.TestedProgram;
+
+    import java.util.*;
+    import java.util.stream.Collectors;
+    import java.util.stream.Stream;
+
+    public class BehaviourTests extends StageTest {
+      static class CustomComparator implements Comparator<Object> {
+        @Override
+        public int compare(Object o1, Object o2) {
+          if (o1 instanceof Boolean && o2 instanceof Boolean) {
+            return ((Boolean) o1).compareTo((Boolean) o2);
+          } else if (o1 instanceof String && o2 instanceof String) {
+            return ((String) o1).compareTo((String) o2);
+          } else if (o1 instanceof Integer && o2 instanceof Integer) {
+            return ((Integer) o1).compareTo((Integer) o2);
+          } else {
+            return 0;
+          }
+        }
+      }
+
+      Map<String, String> commandsRegex = Stream.of(new String[][]{
+              {"/add", "Element .+ added"},
+              {"/remove", "Element on \\d+ position removed"},
+              {"/replace", "Element on \\d+ position replaced with .+"},
+              {"/replaceAll", "Each .+ element replaced with .+"},
+              {"/index", "First occurrence of .+ is on \\d+ position"},
+              {"/sort", "Memory sorted (ascending|descending)"},
+              {"/frequency", "Frequency:(\\n.+: \\d+)+"},
+              {"/print", "Element on \\d+ position is .+"},
+              {"/printAll", "List of elements:\\n.*"},
+              {"/getRandom", "Random element: .+"},
+              {"/count", "Amount of .+: \\d+"},
+              {"/size", "Amount of elements: \\d+"},
+              {"/equals", "\\d+ and \\d+ elements are( not)? equal: .+ \\!?= .+"},
+              {"/readFile", "Data imported: \\d+"},
+              {"/writeFile", "Data exported: \\d+"},
+              {"/clear", "Data cleared"},
+              {"/compare", "Result: .+ (>|<|=) .+"},
+              {"/mirror", "Data reversed"},
+              {"/unique", "Unique values: \\[.+(,\\s*.+)*\\]"},
+
+              {"/sum", "Calculation performed: -?\\d+ \\+ -?\\d+ = -?\\d+"},
+              {"/subtract", "Calculation performed: -?\\d+ \\- -?\\d+ = -?\\d+"},
+              {"/multiply", "Calculation performed: -?\\d+ \\* -?\\d+ = -?\\d+"},
+              {"/divide", "Calculation performed: -?\\d+ \\/ -?\\d+ = -?\\d+(\\.\\d+)?"},
+              {"/pow", "Calculation performed: -?\\d+ \\^ -?\\d+ = \\d+(\\.\\d+)?"},
+              {"/factorial", "Calculation performed: -?\\d\\! = -?\\d+"},
+              {"/sumAll", "Sum of all elements: -?\\d+"},
+              {"/average", "Average of all elements: -?\\d+(\\.\\d+)?"},
+
+              {"/flip", "Element on \\d+ position flipped"},
+              {"/negateAll", "All elements negated"},
+              {"/and", "Operation performed: \\((true|false) && (true|false)\\) is (true|false)"},
+              {"/or", "Operation performed: \\((true|false) \\|\\| (true|false)\\) is (true|false)"},
+              {"/logShift", "Elements shifted by -?\\d+"},
+              {"/convertTo", "Converted: .+"},
+              {"/morse", "Morse code: (\\.*\\_*)+"},
+
+              {"/concat", "Concatenated string: .+"},
+              {"/swapCase", "\".+\" string with swapped case: .+"},
+              {"/upper", "Uppercase \".+\" string: .+"},
+              {"/lower", "Lowercase \".+\" string: .+"},
+              {"/reverse", "Reversed \".+\" string: .+"},
+              {"/length", "Length of \".+\" string: \\d+"},
+              {"/join", "Joined string: .+"},
+              {"/regex", "((There are no strings that match provided regex)|(Strings that match provided regex:\n" +
+                      "\\[.+(,\\s*.+)+\\]))"},
+      }).collect(Collectors.toMap(data -> data[0], data -> data[1]));
+
+      @DynamicTest(order=0)
+      CheckResult outputOnStartAndExit() {
+        TestedProgram pr = new TestedProgram();
+        if (!pr.start().equals(Consts.MENU_OUTPUT)) {
+          return CheckResult.wrong(Consts.MODIFIED + "Incorrect output on start");
+        }
+        pr.execute("0");
+        if (!pr.isFinished()) {
+          return CheckResult.wrong(Consts.MODIFIED + "Program should terminate when choosing 0 in menu");
+        }
+        return CheckResult.correct();
+      }
+
+      Object[] types = {"1", "2", "3"};
+
+      @DynamicTest(data = "types", order=1)
+      CheckResult outputOnChoose(String type) {
+        TestedProgram pr = new TestedProgram();
+        pr.start();
+        if (!pr.execute(type).toLowerCase().contains("perform action")) {
+          return CheckResult.wrong(Consts.MODIFIED + "Can't find \"perform action\" substring after choosing data type");
+        }
+        return CheckResult.correct();
+      }
+
+      Object[][] data = {
+              {"1", true, "booleans", Consts.HELP_BOOLEANS},
+              {"2", 1, "numbers", Consts.HELP_NUMBERS},
+              {"3", "CakeIsALie", "words", Consts.HELP_WORDS}
+      };
+
+      @DynamicTest(data = "data", order=2)
+      CheckResult regexOnChooseAction(String typeEx, Object element, String type, String helpText) {
+        String[] promptsBefore = {
+                "/add %s",
+                "/writeFile data.txt",
+                "/readFile data.txt",
+                "/size",
+                "/frequency",
+                "/print 0",
+                "/printAll asList",
+                "/getRandom",
+                "/equals 0 1",
+                "/sort ascending",
+                "/index %s",
+                "/count %s",
+                "/compare 0 1",
+                "/mirror",
+                "/unique"
+        };
+
+        String[] promptsAfter = {
+                "/replace 0 %s",
+                "/replaceAll %s %s",
+                "/remove 0",
+                "/clear"
+        };
+
+        String[][] specifiedPrompts = {
+                {
+                        "/flip 0",
+                        "/negateAll",
+                        "/and 0 1",
+                        "/or 0 1",
+                        "/logShift 0",
+                        "/convertTo number",
+                        "/morse",
+                },
+                {
+                        "/sum 0 1",
+                        "/subtract 0 1",
+                        "/multiply 0 1",
+                        "/divide 0 1",
+                        "/pow 0 1",
+                        "/factorial 0",
+                        "/sumAll",
+                        "/average",
+                },
+                {
+                        "/concat 0 1",
+                        "/swapCase 0",
+                        "/upper 0",
+                        "/lower 0",
+                        "/reverse 0",
+                        "/length 0",
+                        "/join _",
+                        "/regex .+",
+                }
+        };
+
+        List<String> prompts =
+                new ArrayList<>(promptsBefore.length + specifiedPrompts[Integer.parseInt(typeEx) - 1].length + promptsAfter.length);
+        Collections.addAll(prompts, promptsBefore);
+        Collections.addAll(prompts, specifiedPrompts[Integer.parseInt(typeEx) - 1]);
+        Collections.addAll(prompts, promptsAfter);
+
+        TestedProgram pr = new TestedProgram();
+        pr.start();
+        pr.execute(typeEx);
+
+        String output = pr.execute("/help");
+        if (!output.contains(Consts.HELP_GENERAL) || !output.contains(helpText)) {
+          return CheckResult.wrong(Consts.MODIFIED + "Output for \"/help\" command not matching the initial " +
+                  "one for \"" + type + "\" type.");
+        }
+
+        for (String prompt : prompts) {
+          output = pr.execute(prompt.replaceAll("%s", element.toString()));
+          String command = prompt.split(" ")[0];
+          if (!output.matches(commandsRegex.get(command) + "\\nPerform action:\\n")) {
+            return CheckResult.wrong(Consts.MODIFIED + "Output for \"" + command + "\" command not matching the initial " +
+                    "one for \"" + type + "\" type.");
+          }
+        }
+
+        output = pr.execute("/menu");
+        if (!output.contains(Consts.MENU_OUTPUT)) {
+          return CheckResult.wrong(Consts.MODIFIED + "Output for \"/menu\" command not matching the initial " +
+                  "one for \"" + type + "\" type.");
+        }
+        pr.execute("0");
+        if (!pr.isFinished()) {
+          return CheckResult.wrong(Consts.MODIFIED +
+                  "Program should terminate when choosing 0 in menu after working with data");
+        }
+
+        return CheckResult.correct();
+      }
+
+      Object[][] dataForHelp = {
+              {"1", "booleans", Consts.HELP_BOOLEANS},
+              {"2", "numbers", Consts.HELP_NUMBERS},
+              {"3", "words", Consts.HELP_WORDS}
+      };
+
+      @DynamicTest(data = "dataForHelp",order=3)
+      CheckResult resultOnActionHelp_switchingBetween(String typeEx, String type, String helpText) {
+        TestedProgram pr = new TestedProgram();
+        pr.start();
+        pr.execute(typeEx);
+
+        String output = pr.execute("/help");
+        if (!output.contains(Consts.HELP_GENERAL) || !output.contains(helpText)) {
+          return CheckResult.wrong(Consts.INCORRECT_BEHAVIOUR +
+                  "Output for \"/help\" command is incorrect for " + type + " type");
+        }
+
+        output = pr.execute("/menu");
+        if (!output.contains(Consts.MENU_OUTPUT)) {
+          return CheckResult.wrong(Consts.INCORRECT_BEHAVIOUR +
+                  "Program should return to menu after choosing \"/menu\" command");
+        }
+        for (Object[] o : dataForHelp) {
+          pr.execute(o[0].toString());
+
+          output = pr.execute("/help");
+          if (!output.contains(Consts.HELP_GENERAL) || !output.contains(o[2].toString())) {
+            return CheckResult.wrong(Consts.INCORRECT_BEHAVIOUR +
+                    "Output for \"/help\" command is incorrect for " + o[1] + " type after coming back to menu and " +
+                    "starting another memorizing process");
+          }
+
+          output = pr.execute("/menu");
+          if (!output.contains(Consts.MENU_OUTPUT)) {
+            return CheckResult.wrong(Consts.INCORRECT_BEHAVIOUR +
+                    "Program should return to menu after choosing \"/menu\" command after coming back to menu and " +
+                    "starting another memorizing process");
+          }
+        }
+        pr.execute("0");
+        if (!pr.isFinished()) {
+          return CheckResult.wrong(Consts.INCORRECT_BEHAVIOUR +
+                  "Program should terminate when choosing 0 in menu after working with data");
+        }
+
+        return CheckResult.correct();
+      }
+
+
+      Object[][] dataForTesting() {
+        return new Object[][]{
+                {"1", "booleans", new Boolean[]{true, false, false, true}, false},
+                {"2", "numbers", new Integer[]{2, -1, -1, 2}, 42},
+                {"3", "words", new String[]{"CakeIsALie", "CakeIsATruth", "CakeIsATruth", "CakeIsALie"}, "tmp"}
+        };
+      }
+
+      TestedProgram startAndInitialize(String typeEx, Object[] data) {
+        TestedProgram pr = new TestedProgram();
+        pr.start();
+        pr.execute(typeEx);
+        for (Object o : data) {
+          pr.execute("/add " + o);
+        }
+        return pr;
+      }
+
+      void elementsExistence(TestedProgram pr, Object[] expected, String command, String type) {
+        String output = pr.execute("/printAll oneLine").strip();
+        if (!output.equals("List of elements:\n" +
+                Arrays.stream(expected).map(String::valueOf).collect(Collectors.joining(" ")).strip() +
+                "\nPerform action:")) {
+          throw new WrongAnswer(String.format(Consts.INCORRECT_BEHAVIOUR + "After \"%s\" command execution " +
+                  "\"/printAll oneLine\" output is incorrect for %s type", command, type));
+        }
+      }
+
+      @DynamicTest(data = "dataForTesting", order = 4)
+      CheckResult resultOnActionsAdd(String typeEx, String type, Object[] data, Object additional) {
+        TestedProgram pr = new TestedProgram();
+        pr.start();
+        pr.execute(typeEx);
+        for (int i = 0; i < data.length; i++) {
+          String output = pr.execute("/add " + data[i]);
+          if (!output.contains(data[i].toString())) {
+            return CheckResult.wrong(Consts.INCORRECT_BEHAVIOUR +
+                    "Output for \"/add\" command is incorrect for " + type + " type. It should contain added element.");
+          }
+          elementsExistence(pr, Arrays.copyOfRange(data, 0, i + 1), "/add", type);
+        }
+        return CheckResult.correct();
+      }
+
+      @DynamicTest(data = "dataForTesting", order = 5)
+      CheckResult resultOnActionsPrint(String typeEx, String type, Object[] data, Object additional) {
+        TestedProgram pr = startAndInitialize(typeEx, data);
+        for (int i = 0; i < data.length; i++) {
+          if (!pr.execute("/print " + i).contains(data[i].toString())) {
+            return CheckResult.wrong(Consts.INCORRECT_BEHAVIOUR +
+                    "Output for \"/print\" command is incorrect for " + type + " type. It should contain element on " +
+                    "specific position.");
+          }
+        }
+        return CheckResult.correct();
+      }
+
+      @DynamicTest(data = "dataForTesting", order = 6)
+      CheckResult resultOnActionsRemove(String typeEx, String type, Object[] data, Object additional) {
+        TestedProgram pr = startAndInitialize(typeEx, data);
+        for (int i = data.length - 1; i >= 0; i--) {
+          if (!pr.execute("/remove " + i).contains(String.valueOf(i))) {
+            return CheckResult.wrong(Consts.INCORRECT_BEHAVIOUR +
+                    "Output for \"/remove\" command is incorrect for " + type + " type. It should contain specified index");
+          }
+          elementsExistence(pr, Arrays.copyOfRange(data, 0, i), "/remove", type);
+        }
+        return CheckResult.correct();
+      }
+
+      @DynamicTest(data = "dataForTesting", order = 7)
+      CheckResult resultOnActionsReplace(String typeEx, String type, Object[] data, Object additional) {
+        TestedProgram pr = startAndInitialize(typeEx, data);
+        String output;
+        Object[] result = Arrays.copyOf(data, data.length);
+
+        for (int i = data.length - 1; i >= 0; i--) {
+          output = pr.execute("/replace " + i + " " + additional);
+          if (!output.contains(String.valueOf(i)) || !output.contains(additional.toString())) {
+            return CheckResult.wrong(Consts.INCORRECT_BEHAVIOUR +
+                    "Output for \"/replace\" command is incorrect for " + type + " type. It should contain specified " +
+                    "index and a value");
+          }
+          result[i] = additional;
+          elementsExistence(pr, result, "/replace", type);
+        }
+        return CheckResult.correct();
+      }
+
+      @DynamicTest(data = "dataForTesting", order = 8)
+      CheckResult resultOnActionsReplaceAll(String typeEx, String type, Object[] data, Object additional) {
+        TestedProgram pr = startAndInitialize(typeEx, data);
+        List<Object> result = Arrays.asList(Arrays.copyOf(data, data.length));
+        String output = pr.execute("/replaceAll " + data[0] + " " + additional);
+        if (!output.contains(data[0].toString()) || !output.contains(additional.toString())) {
+          return CheckResult.wrong(Consts.INCORRECT_BEHAVIOUR +
+                  "Output for \"/replaceAll\" command is incorrect for " + type + " type. It should contain specified " +
+                  "both values");
+        }
+        Collections.replaceAll(result, data[0], additional);
+        elementsExistence(pr, result.toArray(), "/replaceAll", type);
+        return CheckResult.correct();
+      }
+
+      @DynamicTest(data = "dataForTesting", order = 9)
+      CheckResult resultOnActionsIndex(String typeEx, String type, Object[] data, Object additional) {
+        TestedProgram pr = startAndInitialize(typeEx, data);
+        List<Object> copy = Arrays.asList(data);
+        for (Object o : data) {
+          String output = pr.execute("/index " + o);
+          int result = copy.indexOf(o);
+          if (!output.contains(String.valueOf(result))) {
+            return CheckResult.wrong(Consts.INCORRECT_BEHAVIOUR +
+                    "Output for \"/index\" command is incorrect for " + type + " type. It should contain correct index");
+          }
+        }
+        return CheckResult.correct();
+      }
+
+      @DynamicTest(data = "dataForTesting", order = 10)
+      CheckResult resultOnActionsSort(String typeEx, String type, Object[] data, Object additional) {
+
+        TestedProgram pr = startAndInitialize(typeEx, data);
+        List<Object> copy = Arrays.asList(data);
+        pr.execute("/sort ascending");
+        copy.sort(new CustomComparator());
+        elementsExistence(pr, copy.toArray(), "/sort", type);
+        return CheckResult.correct();
+      }
+
+      @DynamicTest(data = "dataForTesting", order = 11)
+      CheckResult resultOnActionsFrequency(String typeEx, String type, Object[] data, Object additional) {
+        TestedProgram pr = startAndInitialize(typeEx, data);
+        Map<Object, Long> counts = Arrays.stream(data)
+                .collect(Collectors.groupingBy(e -> e, Collectors.counting()));
+
+        List<String> parts = new ArrayList<>();
+        for (Map.Entry<Object, Long> entry : counts.entrySet()) {
+          parts.add(entry.getKey() + ": " + entry.getValue());
+        }
+
+        String output = pr.execute("/frequency");
+        for (String p : parts) {
+          if (!output.contains(p)) {
+            return CheckResult.wrong(Consts.INCORRECT_BEHAVIOUR +
+                    "Output for \"/frequency\" command is incorrect for " + type + " type. It should contain correct " +
+                    "pairs \"element: amount\"");
+          }
+        }
+        return CheckResult.correct();
+      }
+
+      @DynamicTest(data = "dataForTesting", order = 12)
+      CheckResult resultOnActionsCount(String typeEx, String type, Object[] data, Object additional) {
+        TestedProgram pr = startAndInitialize(typeEx, data);
+        List<Object> copy = Arrays.asList(data);
+        for (Object o : data) {
+          String output = pr.execute("/count " + o);
+          int result = Collections.frequency(copy, o);
+          if (!output.contains(String.valueOf(result))) {
+            return CheckResult.wrong(Consts.INCORRECT_BEHAVIOUR +
+                    "Output for \"/count\" command is incorrect for " + type + " type. It should contain correct number " +
+                    "of specified elements");
+          }
+        }
+        return CheckResult.correct();
+      }
+
+      @DynamicTest(data = "dataForTesting", order = 13)
+      CheckResult resultOnActionsSize(String typeEx, String type, Object[] data, Object additional) {
+        TestedProgram pr = startAndInitialize(typeEx, data);
+
+        String output = pr.execute("/size");
+        if (!output.contains(String.valueOf(data.length))) {
+          return CheckResult.wrong(Consts.INCORRECT_BEHAVIOUR +
+                  "Output for \"/size\" command is incorrect for " + type + " type. It should contain correct number of " +
+                  "elements");
+        }
+        return CheckResult.correct();
+      }
+
+      @DynamicTest(data = "dataForTesting", order = 14)
+      CheckResult resultOnActionsEquals(String typeEx, String type, Object[] data, Object additional) {
+        TestedProgram pr = startAndInitialize(typeEx, data);
+
+        for (int i = 0; i < data.length; i++) {
+          for (int j = 0; j < data.length; j++) {
+            String output = pr.execute("/equals " + i + " " + j);
+            boolean result = data[i] == data[j];
+            if (!output.contains(String.valueOf(i)) || !output.contains(String.valueOf(j)) ||
+                    result && !output.contains(data[i] + " = " + data[j]) || !result && !output.contains(data[i] + " != " + data[j])) {
+              return CheckResult.wrong(Consts.INCORRECT_BEHAVIOUR +
+                      "Output for \"/equals\" command is incorrect for " + type + " type. It should contain indexes, " +
+                      "values and \"=\"/\"!=\" sign");
+            }
+          }
+        }
+        return CheckResult.correct();
+      }
+
+      @DynamicTest(data = "dataForTesting", order = 15)
+      CheckResult resultOnActionsClear(String typeEx, String type, Object[] data, Object additional) {
+        TestedProgram pr = startAndInitialize(typeEx, data);
+        pr.execute("/clear");
+        elementsExistence(pr, new Object[]{}, "/clear", type);
+        return CheckResult.correct();
+      }
+
+      @DynamicTest(data = "dataForTesting", order = 16)
+      CheckResult resultOnActionsCompare(String typeEx, String type, Object[] data, Object additional) {
+        TestedProgram pr = startAndInitialize(typeEx, data);
+        for (int i = 0; i < data.length; i++) {
+          for (int j = 0; j < data.length; j++) {
+            String output = pr.execute("/compare " + i + " " + j);
+            int result = new CustomComparator().compare(data[i], data[j]);
+            if (!output.contains(data[i].toString()) || !output.contains(data[j].toString()) ||
+                    (result < 0) && !output.contains(data[i] + " < " + data[j]) ||
+                    (result > 0) && !output.contains(data[i] + " > " + data[j]) ||
+                    (result == 0) && !output.contains(data[i] + " = " + data[j])) {
+              return CheckResult.wrong(Consts.INCORRECT_BEHAVIOUR +
+                      "Output for \"/compare\" command is incorrect for " + type + " type. It should contain both values " +
+                      "and a correct sign");
+            }
+          }
+        }
+        return CheckResult.correct();
+      }
+
+      @DynamicTest(data = "dataForTesting", order = 17)
+      CheckResult resultOnActionsMirror(String typeEx, String type, Object[] data, Object additional) {
+        TestedProgram pr = startAndInitialize(typeEx, data);
+        String output = pr.execute("/mirror");
+        List<Object> copy = Arrays.asList(data);
+        Collections.reverse(copy);
+        elementsExistence(pr, copy.toArray(), "/mirror", type);
+        return CheckResult.correct();
+      }
+
+      @DynamicTest(data = "dataForTesting", order = 18)
+      CheckResult resultOnActionsUnique(String typeEx, String type, Object[] data, Object additional) {
+        TestedProgram pr = startAndInitialize(typeEx, data);
+        String output = pr.execute("/unique");
+        Set<Object> unique = new HashSet<>(Arrays.asList(data));
+        if (!output.contains(Arrays.toString(unique.toArray()))) {
+          return CheckResult.wrong(Consts.INCORRECT_BEHAVIOUR +
+                  "Output for \"/unique\" command is incorrect for " + type + " type. It should contain correct list of " +
+                  "distinct values");
+        }
+        return CheckResult.correct();
+      }
+
+      public Map<String, String> getFiles() {
+        return Map.of(
+                "integers.txt", "2147483647\n".repeat(3),
+                "strings.txt", "CakeIsALie\n".repeat(3),
+                "booleans.txt", "true\n".repeat(3)
+        );
+      }
+
+      @DynamicTest(data = "dataForTesting", order = 19, files = "getFiles")
+      CheckResult resultOnActionsReadFile(String typeEx, String type, Object[] data, Object additional) {
+        TestedProgram pr = new TestedProgram();
+        pr.start();
+        pr.execute(typeEx);
+
+        String fileName = "";
+        Object value = null;
+        switch (type) {
+          case "booleans" -> {
+            value = true;
+            fileName = "booleans.txt";
+          }
+          case "numbers" -> {
+            value = 2147483647;
+            fileName = "integers.txt";
+          }
+          case "words" -> {
+            value = "CakeIsALie";
+            fileName = "strings.txt";
+          }
+        }
+        String output = pr.execute("/readFile " + fileName);
+        if (!output.contains("3")) {
+          return CheckResult.wrong(Consts.INCORRECT_BEHAVIOUR +
+                  "Output for \"/readFile\" command is incorrect for " + type + " type. It should contain number of " +
+                  "imported " +
+                  "elements");
+        }
+        elementsExistence(pr, new Object[]{value, value, value}, "/readFile", type);
+        return CheckResult.correct();
+      }
+
+      @DynamicTest(data = "dataForTesting", order = 20)
+      CheckResult resultOnActionsWriteFile(String typeEx, String type, Object[] data, Object additional) {
+        TestedProgram pr = startAndInitialize(typeEx, data);
+
+        String fileName = "result.txt";
+        String output = pr.execute("/writeFile " + fileName);
+        if (!output.contains(String.valueOf(data.length))) {
+          return CheckResult.wrong(Consts.INCORRECT_BEHAVIOUR +
+                  "Output for \"/writeFile\" command is incorrect for " + type + " type. It should contain number of " +
+                  "exported " +
+                  "elements");
+        }
+        pr.execute("/clear");
+        pr.execute("/readFile " + fileName);
+        elementsExistence(pr, data, "/writeFile\" and following \"/readFile", type);
+        return CheckResult.correct();
+      }
+
+      @DynamicTest(order = 21)
+      CheckResult resultOnActionsNumbers() {
+        TestedProgram pr = new TestedProgram();
+        pr.start();
+        pr.execute("2");
+        pr.execute("/add 2");
+        pr.execute("/add 4");
+
+        String[][] promptResult = {
+                {"/sum", " 0 1", "2 + 4 = 6"},
+                {"/subtract", " 0 1", "2 - 4 = -2"},
+                {"/multiply", " 0 1", "2 * 4 = 8"},
+                {"/divide", " 1 0", "4 / 2 = 2"},
+                {"/pow", " 0 1", "2 ^ 4 = 16"},
+                {"/factorial", " 1", "4! = 24"},
+                {"/sumAll", "", "6"},
+                {"/average", "", "3"}
+        };
+        for (String[] s : promptResult)
+          if (!pr.execute(s[0] + s[1]).contains(s[2])) {
+            return CheckResult.wrong(Consts.INCORRECT_BEHAVIOUR +
+                    "Output for \"" + s[0] + "\" command is incorrect for numbers type.");
+          }
+        return CheckResult.correct();
+      }
+
+      @DynamicTest(order = 22)
+      CheckResult resultOnActionsStrings() {
+        TestedProgram pr = new TestedProgram();
+        pr.start();
+        pr.execute("3");
+        pr.execute("/add Hello,");
+        pr.execute("/add world!");
+
+        String[][] promptResult = {
+                {"/concat", " 0 1", "Hello,world!"},
+                {"/swapCase", " 1", "WORLD!"},
+                {"/upper", " 0", "HELLO,"},
+                {"/lower", " 0", "hello,"},
+                {"/reverse", " 0", ",olleH"},
+                {"/length", " 0", "6"},
+                {"/join", " _", "Hello,_world!"},
+                {"/regex", " H.+", "[Hello,]"},
+                {"/regex", " .+\\!", "[world!]"}
+        };
+        for (String[] s : promptResult)
+          if (!pr.execute(s[0] + s[1]).contains(s[2])) {
+            return CheckResult.wrong(Consts.INCORRECT_BEHAVIOUR +
+                    "Output for \"" + s[0] + "\" command is incorrect for words type.");
+          }
+        return CheckResult.correct();
+      }
+
+      @DynamicTest(order = 23)
+      CheckResult resultOnActionsBooleans() {
+        TestedProgram pr = new TestedProgram();
+        pr.start();
+        pr.execute("1");
+        List<Boolean> list = new ArrayList<>(List.of(false, true, false, true, false, false, false, false));
+
+        for (Boolean s : list)
+          pr.execute("/add " + s);
+
+        String output = pr.execute("/flip 0");
+        list.set(0, !list.get(0));
+        if (!output.contains("0")) {
+          return CheckResult.wrong(Consts.INCORRECT_BEHAVIOUR +
+                  "Output for \"/flip\" command is incorrect for booleans type. It should contain specified position");
+        }
+        elementsExistence(pr, list.toArray(), "/flip", "booleans");
+
+        pr.execute("/negateAll");
+        list.replaceAll(e -> !e);
+        elementsExistence(pr, list.toArray(), "/negateAll", "booleans");
+
+        output = pr.execute("/logShift 2");
+        Collections.rotate(list, 2);
+        if (!output.contains("2")) {
+          return CheckResult.wrong(Consts.INCORRECT_BEHAVIOUR +
+                  "Output for \"/logShift\" command is incorrect for booleans type. It should contain specified amount");
+        }
+        elementsExistence(pr, list.toArray(), "/logShift", "booleans");
+
+        output = pr.execute("/logShift -2");
+        Collections.rotate(list, -2);
+        if (!output.contains("-2")) {
+          return CheckResult.wrong(Consts.INCORRECT_BEHAVIOUR +
+                  "Output for \"/logShift\" command is incorrect for booleans type. It should contain specified amount");
+        }
+        elementsExistence(pr, list.toArray(), "/logShift", "booleans");
+
+        String[][] promptResult = {
+                {"/and", " 0 4", "(false && true) is false"},
+                {"/or", " 0 4", "(false || true) is true"},
+                {"/convertTo", " string", "/"},
+                {"/convertTo", " number", "47"},
+                {"/morse", "", "__._...."},
+        };
+
+        for (String[] s : promptResult)
+          if (!pr.execute(s[0] + s[1]).contains(s[2])) {
+            return CheckResult.wrong(Consts.INCORRECT_BEHAVIOUR +
+                    "Output for \"" + s[0] + "\" command is incorrect for booleans type.");
+          }
+        return CheckResult.correct();
+      }
+    }
+  learner_created: false
+- name: test/BugTests.java
+  visible: false
+  text: |
+    import org.hyperskill.hstest.dynamic.DynamicTest;
+    import org.hyperskill.hstest.dynamic.output.InfiniteLoopDetector;
+    import org.hyperskill.hstest.stage.StageTest;
+    import org.hyperskill.hstest.testcase.CheckResult;
+    import org.hyperskill.hstest.testing.TestedProgram;
+
+    import java.util.*;
+    import java.util.stream.LongStream;
+
+    public class BugTests extends StageTest {
+
+      static class CustomComparator implements Comparator<Object> {
+        @Override
+        public int compare(Object o1, Object o2) {
+          if (o1 instanceof Boolean && o2 instanceof Boolean) {
+            return ((Boolean) o1).compareTo((Boolean) o2);
+          } else if (o1 instanceof String && o2 instanceof String) {
+            return ((String) o1).compareTo((String) o2);
+          } else if (o1 instanceof Integer && o2 instanceof Integer) {
+            return ((Integer) o1).compareTo((Integer) o2);
+          } else {
+            return 0;
+          }
+        }
+      }
+
+      Object[][] dataForTesting() {
+        return new Object[][]{
+                {"1", "booleans", new Boolean[]{true, false}},
+                {"1", "booleans", new Boolean[]{false, false, false}},
+                {"1", "booleans", new Boolean[]{true, false, true, false}},
+                {"2", "numbers", new Integer[]{1, 2}},
+                {"2", "numbers", new Integer[]{5, 3, 4}},
+                {"2", "numbers", new Integer[]{7, 8, 6, 9}},
+                {"3", "words", new String[]{"Hello", "World"}},
+                {"3", "words", new String[]{"Around", "The", "world"}},
+                {"3", "words", new String[]{"Four", "Very", "interesting", "Words"}}
+        };
+      }
+
+      public Map<String, String> getFiles() {
+        return Map.of(
+                "numbers.txt", "2147483647\n".repeat(10),
+                "words.txt", "CakeIsALie\n".repeat(10),
+                "booleans.txt", "true\nfalse\n".repeat(5),
+                "numbers2.txt", "2147483647\n2147483647\n",
+                "words2.txt", "CakeIsALie\nCakeIsALie\n",
+                "booleans2.txt", "true\nfalse\n"
+        );
+      }
+
+      //Each type
+      @DynamicTest(data = "dataForTesting", order = 24)
+      CheckResult GetRandomCheck(String typeEx, String type, Object[] data) {
+        InfiniteLoopDetector.setCheckSameInputBetweenRequests(false);
+        TestedProgram pr = StartAndInitialize(typeEx, data);
+        String output;
+        for (Object o : data) {
+          int k = 0;
+          do {
+            output = pr.execute("/getRandom");
+            k++;
+          } while (!output.contains(o.toString()) && k != 50);
+          if (k == 50) {
+            return CheckResult.wrong("There is a bug in \"/getRandom\" function (" + type + "). Some of added values " +
+                    "can't be shown. Unlikely this is happening due to chance, but if you're sure of your solution - " +
+                    "restart the tests.");
+          }
+        }
+        return CheckResult.correct();
+      }
+
+      @DynamicTest(data = "dataForTesting", files = "getFiles", order = 25)
+      CheckResult ReadFileCheck(String typeEx, String type, Object[] data) {
+        TestedProgram pr = StartAndInitialize(typeEx, data);
+        String output = pr.execute("/readFile " + type + ".txt");
+        if (!output.contains("10")) {
+          return CheckResult.wrong("There is a bug in \"/readFile\" function (" + type + "). The number of only imported " +
+                  "elements should be printed");
+        }
+        output = pr.execute("/readFile " + type + "2.txt");
+        if (!output.contains("2")) {
+          return CheckResult.wrong("There is a bug in \"/readFile\" function (" + type + "). The number of only imported " +
+                  "elements should be printed");
+        }
+        return CheckResult.correct();
+      }
+
+      @DynamicTest(data = "dataForTesting", order = 26)
+      CheckResult MirrorCheck(String typeEx, String type, Object[] data) {
+        TestedProgram pr = StartAndInitialize(typeEx, data);
+        pr.execute("/mirror");
+        String output = pr.execute("/printAll asList");
+        List<Object> reversed = Arrays.asList(data);
+        Collections.reverse(reversed);
+        if (!output.contains(Arrays.toString(reversed.toArray()))) {
+          return CheckResult.wrong("There is a bug in \"/mirror\" function (" + type + "). The order of the elements in " +
+                  "list should be mirrored, so after printing them all they should be printed in reverse order");
+        }
+        return CheckResult.correct();
+      }
+
+      @DynamicTest(data = "dataForTesting", order = 27)
+      CheckResult SortCheck(String typeEx, String type, Object[] data) {
+        TestedProgram pr = StartAndInitialize(typeEx, data);
+        List<Object> copy = Arrays.asList(data);
+        pr.execute("/sort ascending");
+        copy.sort(new CustomComparator());
+        String output = pr.execute("/printAll asList").strip();
+        if (!output.contains(Arrays.toString(copy.toArray()))) {
+          return CheckResult.wrong("There is a bug in \"/sort\" function (" + type + "). The order of elements after " +
+                  "ascending sort is incorrect.");
+        }
+        pr.execute("/sort descending");
+        copy.sort(new CustomComparator().reversed());
+        output = pr.execute("/printAll asList").strip();
+        if (!output.contains(Arrays.toString(copy.toArray()))) {
+          return CheckResult.wrong("There is a bug in \"/sort\" function (" + type + "). The order of elements after " +
+                  "descending sort is incorrect.");
+        }
+        return CheckResult.correct();
+      }
+
+      Object[][] dataForBooleans() {
+        return new Object[][]{
+                {new Boolean[]{true, false, true, false, false, true, true, false}},
+                {new Boolean[]{true, true, true, false, true, false, true, true, false, false}},
+                {new Boolean[]{false, false, false, true, true, true, false, true, false, true, true, false}},
+        };
+      }
+
+      //Booleans
+      @DynamicTest(data = "dataForBooleans", order = 28)
+      CheckResult AndOrFlipCheck(Boolean[] data) {
+        TestedProgram pr = StartAndInitialize("1", data);
+        for (int i = 0; i < data.length; i++) {
+          for (int j = 0; j < data.length; j++) {
+            if (!pr.execute("/and " + i + " " + j).contains("(" + data[i] + " && " + data[j] + ") is " + (data[i] &&
+                    data[j]))) {
+              return CheckResult.wrong("There is a bug in \"/and\" function (booleans). Result is incorrect.");
+            }
+            if (!pr.execute("/or " + i + " " + j).contains("(" + data[i] + " || " + data[j] + ") is " + (data[i] ||
+                    data[j]))) {
+              return CheckResult.wrong("There is a bug in \"/or\" function (booleans). Result is incorrect.");
+            }
+          }
+        }
+        for (int i = 0; i < data.length; i++) {
+          pr.execute("/flip " + i);
+          if (!pr.execute("/print " + i).contains(String.valueOf(!data[i]))) {
+            return CheckResult.wrong("There is a bug in \"/flip\" function (booleans). Result is incorrect.");
+          }
+        }
+        return CheckResult.correct();
+      }
+
+      @DynamicTest(data = "dataForBooleans", order = 29)
+      CheckResult LogShiftCheck(Boolean[] data) {
+        TestedProgram pr = StartAndInitialize("1", data);
+        List<Object> copy = Arrays.asList(data);
+        String output;
+        for (int i = 0; i < 10; i++) {
+          pr.execute("/logShift " + i);
+          Collections.rotate(copy, i);
+          output = pr.execute("/printAll asList").strip();
+          if (!output.contains(Arrays.toString(copy.toArray()))) {
+            return CheckResult.wrong("There is a bug in \"/logShift\" function (booleans). Elements should be shifted " +
+                    "by an integer, provided as an argument.");
+          }
+        }
+        return CheckResult.correct();
+      }
+
+
+      Object[][] dataForWords() {
+        return new Object[][]{
+                {new String[]{"Lorem", "ipsuM"}},
+                {new String[]{"doLoR", "sIT", "AMet"}},
+                {new String[]{"coNseCTetUr", "AdiPisCIng", "ElIT", "sed"}},
+        };
+      }
+
+      //Words
+      @DynamicTest(data = "dataForWords", order = 30)
+      CheckResult JoinSwapCaseCheck(String[] data) {
+        TestedProgram pr = StartAndInitialize("3", data);
+        for (String s : new String[]{"_", ",", "DOT"}) {
+          String output = pr.execute("/join " + s);
+          if (!output.contains(String.join(s, data))) {
+            return CheckResult.wrong("There is a bug in \"/join\" function (words). Elements should be joined " +
+                    "by a delimiter, provided as an argument.");
+          }
+        }
+        for (int i = 0; i < data.length; i++) {
+          StringBuilder s = new StringBuilder(data[i]);
+          for (int j = 0; j < s.length(); j++) {
+            char c = s.charAt(j);
+            if (Character.isUpperCase(c)) {
+              s.setCharAt(j, Character.toLowerCase(c));
+            } else if (Character.isLowerCase(c)) {
+              s.setCharAt(j, Character.toUpperCase(c));
+            }
+          }
+          if (!pr.execute("/swapCase " + i).contains(s)) {
+            return CheckResult.wrong("There is a bug in \"/swapCase\" function (words). Result is incorrect.");
+          }
+        }
+        return CheckResult.correct();
+      }
+
+      Object[][] dataForNumbers() {
+        return new Object[][]{
+                {new Integer[]{2, 4}},
+                {new Integer[]{6, 1, 5}},
+                {new Integer[]{0, 1, 0, 3}},
+        };
+      }
+
+      //Numbers
+      @DynamicTest(data = "dataForNumbers", order = 31)
+      CheckResult FactorialAverageCheck(Integer[] data) {
+        TestedProgram pr = StartAndInitialize("2", data);
+        for (int i = 0; i < data.length; i++) {
+          String output = pr.execute("/factorial " + i);
+          long res = LongStream.rangeClosed(1, data[i]).reduce(1, (long x, long y) -> x * y);
+          if (!output.contains(String.valueOf(res))) {
+            return CheckResult.wrong("There is a bug in \"/factorial\" function (numbers). Result is incorrect.");
+          }
+        }
+        String output = pr.execute("/average");
+        if (!output.contains(String.valueOf(Arrays.stream(data).mapToInt(Integer::intValue).sum() / data.length))) {
+          return CheckResult.wrong("There is a bug in \"/average\" function (numbers). Result is incorrect.");
+        }
+        return CheckResult.correct();
+      }
+
+      Object[][] dataForOverUnderflow() {
+        return new Object[][]{
+                {new Integer[]{2147483647, 2147483647}, new String[]{"4294967294", "0", "4611686014132420609",
+                        "4294967294", "2147483647"}},
+                {new Integer[]{-2147483647, -2147483647}, new String[]{"-4294967294", "0", "4611686014132420609",
+                        "-4294967294", "-2147483647"}},
+                {new Integer[]{-2147483647, 2147483647}, new String[]{"0", "-4294967294", "-4611686014132420609", "0", "0"
+                }},
+                {new Integer[]{2147483647, -2147483647}, new String[]{"0", "4294967294", "-4611686014132420609", "0", "0"}},
+        };
+      }
+
+      @DynamicTest(data = "dataForOverUnderflow", order = 32)
+      CheckResult OverflowUnderflowCheck(Integer[] data, String[] result) {
+        TestedProgram pr = StartAndInitialize("2", data);
+        if (!pr.execute("/sum 0 1").contains(result[0])) {
+          return CheckResult.wrong("There is a bug in \"/sum\" function (numbers). Result is incorrect.");
+        }
+        if (!pr.execute("/subtract 0 1").contains(result[1])) {
+          return CheckResult.wrong("There is a bug in \"/subtract\" function (numbers). Result is incorrect.");
+        }
+        if (!pr.execute("/multiply 0 1").contains(result[2])) {
+          return CheckResult.wrong("There is a bug in \"/multiply\" function (numbers). Result is incorrect.");
+        }
+        if (!pr.execute("/sumAll").contains(result[3])) {
+          return CheckResult.wrong("There is a bug in \"/sumAll\" function (numbers). Result is incorrect.");
+        }
+        if (!pr.execute("/average").contains(result[4])) {
+          return CheckResult.wrong("There is a bug in \"/average\" function (numbers). Result is incorrect.");
+        }
+        return CheckResult.correct();
+      }
+
+      Object[][] dataForPowDivide() {
+        return new Object[][]{
+                {new Integer[]{9, 19}, "/pow 0 1", "1350851717672992089"},
+                {new Integer[]{6, 1000000}, "/divide 0 1", "0,000006"},
+                {new Integer[]{1000001, 1000000}, "/divide 0 1", "1,000001"},
+                {new Integer[]{8, -2}, "/pow 0 1", "0,015625"},
+                {new Integer[]{1, 1, 1, 2}, "/average", "1,25"},
+        };
+      }
+
+      @DynamicTest(data = "dataForPowDivide", order = 33)
+      CheckResult PowDivideCheck(Integer[] data, String prompt, String result) {
+        TestedProgram pr = StartAndInitialize("2", data);
+        if (!pr.execute(prompt).replaceAll("\\.", ",").contains(result)) {
+          return CheckResult.wrong("There is a bug in \"" + prompt.split(" ")[0] + "\" function (numbers). Result is " +
+                  "incorrect.");
+        }
+        return CheckResult.correct();
+      }
+
+
+      TestedProgram StartAndInitialize(String typeEx, Object[] data) {
+        TestedProgram pr = new TestedProgram();
+        pr.start();
+        pr.execute(typeEx);
+        for (Object o : data) {
+          pr.execute("/add " + o);
+        }
+        return pr;
+      }
+    }
+  learner_created: false
+- name: test/Consts.java
+  visible: false
+  text: |
+    import java.util.Arrays;
+    import java.util.List;
+
+    public class Consts {
+      public static final float THRESHOLD = 0.95f;
+      public static final String MODIFIED = "There is no need to change the initial behaviour of the program:\n";
+      public static final String INCORRECT_BEHAVIOUR = "Behaviour is incorrect or not matching the initial one:\n";
+
+      public static String moreLikelyOom(String command, List<String> sequence, boolean reveal) {
+        return "Execution of \"" + command + "\" command finished with incorrect results for a large amount of data." +
+                " More likely your program caught an OutOfMemoryError" + (reveal ? " while executing this sequence of " +
+                "input: \n" + Arrays.toString(sequence.toArray()) : ".");
+      }
+
+      public static final String MENU_OUTPUT = """
+              Welcome to Data Memory!
+              Possible actions:
+              1. Memorize booleans
+              2. Memorize numbers
+              3. Memorize words
+              0. Quit
+              """;
+
+      public static final String HELP_GENERAL = """
+              ===================================================================================================================
+              Usage: COMMAND [<TYPE> PARAMETERS]
+              ===================================================================================================================
+              General commands:
+              ===================================================================================================================
+              /help - Display this help message
+              /menu - Return to the menu
+
+              /add [<T> ELEMENT] - Add the specified element to the list
+              /remove [<int> INDEX] - Remove the element at the specified index from the list
+              /replace [<int> INDEX] [<T> ELEMENT] - Replace the element at specified index with the new one
+              /replaceAll [<T> OLD] [<T> NEW] - Replace all occurrences of specified element with the new one
+
+              /index [<T> ELEMENT] - Get the index of the first specified element in the list
+              /sort [ascending/descending] - Sort the list in ascending or descending order
+              /frequency - The frequency count of each element in the list
+              /print [<int> INDEX] - Print the element at the specified index in the list
+              /printAll [asList/lineByLine/oneLine] - Print all elements in the list in specified format
+              /getRandom - Get a random element from the list
+              /count [<T> ELEMENT] - Count the number of occurrences of the specified element in the list
+              /size - Get the number of elements in the list
+              /equals [<int> INDEX1] [<int> INDEX2] - Check if two elements are equal
+              /clear - Remove all elements from the list
+              /compare [<int> INDEX1] [<int> INDEX2] Compare elements at the specified indices in the list
+              /mirror - Mirror elements' positions in list
+              /unique - Unique elements in the list
+              /readFile [<string> FILENAME] - Import data from the specified file and add it to the list
+              /writeFile [<string> FILENAME] - Export the list data to the specified file""";
+
+      public static final String HELP_NUMBERS = """
+              ===================================================================================================================
+              Number-specific commands:
+              ===================================================================================================================
+              /sum [<int> INDEX1] [<int> INDEX2] - Calculate the sum of the two specified elements
+              /subtract [<int> INDEX1] [<int> INDEX2] - Calculate the difference between the two specified elements
+              /multiply [<int> INDEX1] [<int> INDEX2] - Calculate the product of the two specified elements
+              /divide [<int> INDEX1] [<int> INDEX2] - Calculate the division of the two specified elements
+              /pow [<int> INDEX1] [<int> INDEX2] - Calculate the power of the specified element to the specified exponent element
+              /factorial [<int> INDEX] - Calculate the factorial of the specified element
+              /sumAll - Calculate the sum of all elements
+              /average - Calculate the average of all elements
+              ===================================================================================================================
+              """;
+      public static final String HELP_BOOLEANS = """
+              ===================================================================================================================
+              Boolean-specific commands:
+              ===================================================================================================================
+              /flip [<int> INDEX] - Flip the specified boolean
+              /negateAll - Negate all the booleans in memory
+              /and [<int> INDEX1] [<int> INDEX2] - Calculate the bitwise AND of the two specified elements
+              /or [<int> INDEX1] [<int> INDEX2] - Calculate the bitwise OR of the two specified elements
+              /logShift [<int> NUM] - Perform a logical shift of elements in memory by the specified amount
+              /convertTo [string/number] - Convert the boolean(bit) sequence in memory to the specified type
+              /morse - Convert the boolean(bit) sequence to Morse code
+              ===================================================================================================================
+              """;
+      public static final String HELP_WORDS = """
+              ===================================================================================================================
+              Word-specific commands:
+              ===================================================================================================================
+              /concat [<int> INDEX1] [<int> INDEX2] Concatenate two specified strings
+              /swapCase [<int> INDEX] Output swapped case version of the specified string
+              /upper [<int> INDEX] Output uppercase version of the specified string
+              /lower [<int> INDEX] Output lowercase version of the specified string
+              /reverse [<int> INDEX] Output reversed version of the specified string
+              /length [<int> INDEX] Get the length of the specified string
+              /join [<string> DELIMITER] Join all the strings with the specified delimiter
+              /regex [<string> PATTERN] Search for all elements that match the specified regular expression pattern
+              ===================================================================================================================
+              """;
+    }
+  learner_created: false
+- name: test/ExceptionsTests.java
+  visible: false
+  text: |
+    import org.hyperskill.hstest.dynamic.DynamicTest;
+    import org.hyperskill.hstest.exception.outcomes.WrongAnswer;
+    import org.hyperskill.hstest.stage.StageTest;
+    import org.hyperskill.hstest.testcase.CheckResult;
+    import org.hyperskill.hstest.testing.TestedProgram;
+
+    import java.io.FileNotFoundException;
+    import java.io.IOException;
+    import java.lang.reflect.InvocationTargetException;
+    import java.nio.file.NoSuchFileException;
+    import java.util.regex.PatternSyntaxException;
+
+    public class ExceptionsTests extends StageTest {
+
+      @DynamicTest(order = 34)
+      CheckResult MenuFeedback() {
+        TestedProgram pr = new TestedProgram();
+        pr.start();
+        for (String s : new String[]{"4", "integer", "-2"}) {
+          CheckFeedback(pr.execute(s), "Incorrect command",
+                  "Other option than '0', '1', '2' or '3' selected in main menu","any type");
+        }
+        return CheckResult.correct();
+      }
+
+      Object[][] dataForTesting() {
+        return new Object[][]{
+                {"1", "booleans", new Boolean[]{true, false, false, true}, true},
+                {"2", "numbers", new Integer[]{2, -1, -1, 2}, 42},
+                {"3", "words", new String[]{"CakeIsALie", "CakeIsATruth", "CakeIsATruth", "CakeIsALie"}, "tmp"}
+        };
+      }
+
+      @DynamicTest(data = "dataForTesting", order = 35)
+      CheckResult NoSuchMethodExceptionCheck(String typeEx, String type, Object[] data, Object additional) {
+        TestedProgram pr = new TestedProgram();
+        pr.start();
+        pr.execute(typeEx);
+        for (String s : new String[]{"hey?", "/smile", "/draw line", "add " + additional}) {
+          UpdateFeedback(pr, type, s, NoSuchMethodException.class);
+          CheckFeedback(pr.execute(s), "No such command",
+                  "Unknown command is called", type);
+        }
+        for (String s : new String[]{"/add", "/compare 2"}) {
+          UpdateFeedback(pr, type, s, NoSuchMethodException.class);
+          CheckFeedback(pr.execute(s), "Incorrect amount of arguments",
+                  "Incorrect amount of arguments provided to a command", type);
+        }
+        return CheckResult.correct();
+      }
+
+      @DynamicTest(data = "dataForTesting", order = 36)
+      CheckResult IndexOutOfBoundsExceptionCheck(String typeEx, String type, Object[] data, Object additional) {
+        TestedProgram pr = StartAndInitialize(typeEx, data);
+        for (String s : new String[]{"/remove 5", "/print 5", "/replace 5 " + additional, "/equals 5 2", "/compare 5 2",
+                "/equals 2 5", "/compare 2 5"}) {
+          UpdateFeedback(pr, type, s.split(" ")[0], IndexOutOfBoundsException.class);
+          CheckFeedback(pr.execute(s), "Index out of bounds!",
+                  "Index out of bounds", type);
+        }
+        String[][] specifiedPrompts = {
+                {
+                        "/flip 5",
+                        "/and 5 2", "/and 2 5",
+                        "/or 5 2", "/or 2 5",
+                },
+                {
+                        "/sum 5 2", "/sum 2 5",
+                        "/subtract 5 2", "/subtract 2 5",
+                        "/multiply 5 2", "/multiply 2 5",
+                        "/divide 5 2", "/divide 2 5",
+                        "/pow 5 2", "/pow 2 5",
+                        "/factorial 5",
+                },
+                {
+                        "/concat 5 2", "/concat 2 5",
+                        "/swapCase 5",
+                        "/upper 5",
+                        "/lower 5",
+                        "/reverse 5",
+                        "/length 5",
+                }
+        };
+        for (String s : specifiedPrompts[Integer.parseInt(typeEx) - 1]) {
+          UpdateFeedback(pr, type, s.split(" ")[0], IndexOutOfBoundsException.class);
+          CheckFeedback(pr.execute(s), "Index out of bounds!",
+                  "Index out of bounds", type);
+        }
+        return CheckResult.correct();
+      }
+
+      @DynamicTest(data = "dataForTesting", order = 37)
+      CheckResult NumberFormatExceptionCheck(String typeEx, String type, Object[] data, Object additional) {
+        TestedProgram pr = StartAndInitialize(typeEx, data);
+        for (String s : new String[]{"/remove A", "/print A", "/replace A " + additional, "/equals A B", "/compare A B"}) {
+          UpdateFeedback(pr, type, s.split(" ")[0], NumberFormatException.class);
+          CheckFeedback(pr.execute(s), "Some arguments can't be parsed!",
+                  "Integer arguments parsing", type);
+        }
+        String[][] specifiedPrompts = {
+                {
+                        "/flip A",
+                        "/and A 2", "/and 2 A",
+                        "/or A 2", "/or 2 A",
+                        "/logShift A"
+                },
+                {
+                        "/add A", "/replace 2 A", "/replaceAll 2 A", "/replaceAll A 2", "/index A", "/count A",
+                        "/sum 2 A", "/sum A 2",
+                        "/subtract 2 A", "/subtract A 2",
+                        "/multiply 2 A", "/multiply A 2",
+                        "/divide 2 A", "/divide A 2",
+                        "/pow 2 A", "/pow A 2",
+                        "/factorial A"
+                },
+                {
+                        "/concat 2 A", "/concat A 2",
+                        "/swapCase A",
+                        "/upper A",
+                        "/lower A",
+                        "/reverse A",
+                        "/length A",
+                }
+        };
+        for (String s : specifiedPrompts[Integer.parseInt(typeEx) - 1]) {
+          UpdateFeedback(pr, type, s.split(" ")[0], NumberFormatException.class);
+          CheckFeedback(pr.execute(s), "Some arguments can't be parsed!",
+                  "Integer arguments parsing", type);
+        }
+        return CheckResult.correct();
+      }
+
+      @DynamicTest(data = "dataForTesting", order = 38)
+      CheckResult IllegalArgumentExceptionCheck(String typeEx, String type, Object[] data, Object additional) {
+        TestedProgram pr = new TestedProgram();
+        pr.start();
+        UpdateFeedback(pr, type, "/getRandom", IllegalArgumentException.class);
+        pr.execute(typeEx);
+        CheckFeedback(pr.execute("/getRandom"), "There are no elements memorized",
+                "Random element with no elements memorized", type);
+        return CheckResult.correct();
+      }
+
+      @DynamicTest(order = 39)
+      CheckResult ArithmeticExceptionCheck() {
+        TestedProgram pr = new TestedProgram();
+        pr.start();
+        pr.execute("2");
+        UpdateFeedback(pr, "integers", "/divide", ArithmeticException.class);
+        pr.execute("/add 1");
+        pr.execute("/add 0");
+        CheckFeedback(pr.execute("/divide 0 1"), "Division by zero",
+                "An element is divided by 0", "numbers");
+        return CheckResult.correct();
+      }
+
+      @DynamicTest(data = "dataForTesting", order = 40)
+      CheckResult FileNotFoundExceptionCheck(String typeEx, String type, Object[] data, Object additional) {
+        TestedProgram pr = StartAndInitialize(typeEx, data);
+        UpdateFeedback(pr, type, "/readFile", FileNotFoundException.class);
+        UpdateFeedback(pr, type, "/readFile", NoSuchFileException.class);
+        CheckFeedback(pr.execute("/readFile notfound.txt"), "File not found!",
+                "Reading a file, that doesn't exist", type);
+        return CheckResult.correct();
+      }
+
+      @DynamicTest(order = 41)
+      CheckResult PatternSyntaxExceptionCheck() {
+        TestedProgram pr = new TestedProgram();
+        pr.start();
+        pr.execute("3");
+        UpdateFeedback(pr, "words", "/regex", PatternSyntaxException.class);
+        CheckFeedback(pr.execute("/regex ())"), "Incorrect regex pattern provided",
+                "Calling regex operation with incorrect expression", "words");
+        return CheckResult.correct();
+      }
+
+      //Feedbacks
+
+      Object[][] dataForFeedbacks() {
+        return new Object[][]{
+                {"1", "booleans", new Boolean[]{true, true, true, true}, false},
+                {"2", "numbers", new Integer[]{1, 1, 1, 1}, 42},
+                {"3", "words", new String[]{"CakeIsALie", "CakeIsALie", "CakeIsALie", "CakeIsALie"}, "CakeIsATruth"}
+        };
+      }
+
+      @DynamicTest(data = "dataForFeedbacks", order = 42)
+      CheckResult IndexFeedbackCheck(String typeEx, String type, Object[] data, Object additional) {
+        TestedProgram pr = StartAndInitialize(typeEx, data);
+        CheckFeedback(pr.execute("/index " + additional), "There is no such element",
+                "Calling \"/index\" operation without such element in a list", type);
+        CheckFeedback(pr.execute("/sort up"), "Incorrect argument, possible arguments: ascending, descending",
+                "Calling \"/sort\" operation with an argument that is nor \"ascending\" nor \"descending\"", type);
+        CheckFeedback(pr.execute("/printAll somehow"), "Incorrect argument, possible arguments: asList, lineByLine, oneLine",
+                "Calling \"/printAll\" operation with an argument that is nor \"asList\" nor \"lineByLine\" nor \"oneLine\"", type);
+        return CheckResult.correct();
+      }
+
+      @DynamicTest(data = "dataForFeedbacks", order = 43)
+      CheckResult FrequencyZeroFeedbackCheck(String typeEx, String type, Object[] data, Object additional) {
+        TestedProgram pr = new TestedProgram();
+        pr.start();
+        pr.execute(typeEx);
+        CheckFeedback(pr.execute("/frequency"), "There are no elements",
+                "Calling \"/frequency\" operation with 0 elements in a list", type);
+        return CheckResult.correct();
+      }
+
+      @DynamicTest(order = 44)
+      CheckResult BooleanFeedbackCheck() {
+        TestedProgram pr = new TestedProgram();
+        pr.start();
+        pr.execute("1");//Booleans
+        CheckFeedback(pr.execute("/convertTo number"), "No data memorized",
+                "Calling \"/convertTo\" operation with 0 elements in a list", "booleans");
+        CheckFeedback(pr.execute("/morse"), "No data memorized",
+                "Calling \"/morse\" operation with 0 elements in a list", "booleans");
+        pr.execute("/add true");
+        pr.execute("/add false");
+        CheckFeedback(pr.execute("/add notTrue"), "Some arguments can't be parsed",
+                "Calling \"/add\" operation with an argument that is nor \"true\" nor \"false\"", "booleans");
+        CheckFeedback(pr.execute("/convertTo something"), "Incorrect argument, possible arguments: string, number",
+                "Calling \"/convertTo\" operation with an argument that is nor \"string\" nor \"number\"", "booleans");
+        return CheckResult.correct();
+      }
+
+      @DynamicTest(order = 45)
+      CheckResult RegexFeedbackCheck() {
+        TestedProgram pr = new TestedProgram();
+        pr.start();
+        pr.execute("3");//Words
+        CheckFeedback(pr.execute("/regex .+"), "There are no strings that match provided regex",
+                "No elements matching provided expression (\"/regex\" operation)", "words");
+        pr.execute("/add apple");
+        pr.execute("/add grape");
+        CheckFeedback(pr.execute("/regex $.^"), "There are no strings that match provided regex",
+                "No elements matching provided expression (\"/regex\" operation)", "words");
+        return CheckResult.correct();
+      }
+
+      @DynamicTest(order = 46)
+      CheckResult FactorialFeedbackCheck() {
+        TestedProgram pr = new TestedProgram();
+        pr.start();
+        pr.execute("2");//Integers
+        pr.execute("/add -1");
+        CheckFeedback(pr.execute("/factorial 0"), "undefined",
+                "Calling \"/factorial\" operation for a negative number", "numbers");
+        return CheckResult.correct();
+      }
+
+      TestedProgram StartAndInitialize(String typeEx, Object[] data) {
+        TestedProgram pr = new TestedProgram();
+        pr.start();
+        pr.execute(typeEx);
+        for (Object o : data) {
+          pr.execute("/add " + o);
+        }
+        return pr;
+      }
+
+      void UpdateFeedback(TestedProgram pr, String type, String function, Class cause) {
+        for (Class c : new Class[]{
+                IndexOutOfBoundsException.class,
+                NoSuchMethodException.class,
+                InvocationTargetException.class,
+                NumberFormatException.class,
+                ArithmeticException.class,
+                StackOverflowError.class,
+                IllegalArgumentException.class,
+                NullPointerException.class,
+                IOException.class,
+                FileNotFoundException.class,
+                NoSuchFileException.class,
+                PatternSyntaxException.class
+        })
+          pr.feedbackOnException(c, "Caught an expected " + c.getSimpleName() + " while performing \"" + function + "\" " +
+                  "function for " + type + "." + (c == InvocationTargetException.class ?
+                  " Possible cause: " + cause.getSimpleName() : ""));
+      }
+
+      void CheckFeedback(String got, String expected, String action, String type) {
+        if (!got.toLowerCase().contains(expected.toLowerCase()))
+          throw new WrongAnswer("Feedback is incorrect for \"" + action + "\" case for "+type+". Expected existence of \"" + expected + "\" substring");
+      }
+    }
+  learner_created: false
+- name: test/MemoryTests.java
+  visible: false
+  text: |-
+    import org.hyperskill.hstest.dynamic.DynamicTest;
+    import org.hyperskill.hstest.stage.StageTest;
+    import org.hyperskill.hstest.testcase.CheckResult;
+    import org.hyperskill.hstest.testing.TestedProgram;
+
+    import java.lang.management.ManagementFactory;
+    import java.lang.management.MemoryMXBean;
+    import java.lang.reflect.InvocationTargetException;
+    import java.util.ArrayList;
+    import java.util.List;
+    import java.util.Map;
+
+    public class MemoryTests extends StageTest {
+
+      public Map<String, String> getFiles() {
+        return Map.of(
+                "numbers.txt", "2147483647\n".repeat(1_500_000),
+                "words.txt", "CakeIsALie\n".repeat(1_500_000),
+                "booleans.txt", "true\nfalse\n".repeat(750_000)
+        );
+      }
+
+      //  @DynamicTest(timeLimit = 100_000, files = "getFiles")
+    //  CheckResult TestDebug() {
+    //    List<String> usageList = new ArrayList<>();
+    //    MemoryMXBean memoryMXBean = ManagementFactory.getMemoryMXBean();
+    //    System.gc();
+    //    TestedProgram pr = new TestedProgram();
+    //    pr.start();
+    //
+    //    Object[][] data = {
+    //            {"1", "boolean", "booleans.txt", "false", 750_000},
+    //            {"2", "numbers", "numbers.txt", "2147483647", 1_500_000},
+    //            {"3", "words", "words.txt", "CakeIsALie", 1_500_000}
+    //    };
+    //    for (Object[] d : data) {
+    //      pr.execute((String) d[0]);
+    //      for (int i = 0; i < 4; i++) {
+    //        usageList.add("Before " + d[1] + " " + i + " allocation: \t\t" + memoryMXBean.getHeapMemoryUsage().getUsed());
+    //        pr.execute("/readFile " + d[2]);
+    //        pr.execute("/size");
+    //        pr.execute("/count " + d[3]);
+    //      }
+    //      pr.execute("/menu");
+    //      usageList.add("After " + d[1] + " allocation: \t\t" + memoryMXBean.getHeapMemoryUsage().getUsed());
+    //    }
+    //    System.gc();
+    //    usageList.add("After gc: \t\t" + memoryMXBean.getHeapMemoryUsage().getUsed());
+    //    for (String u : usageList) {
+    //      System.out.println(u);
+    //    }
+    //    pr.execute("0");
+    //    return CheckResult.correct();
+    //  }
+      void updateFeedbackOnException(TestedProgram pr, String lastCommand, String lastMemorizerType) {
+        pr.feedbackOnException(InvocationTargetException.class, "Your program threw an InvocationTargetException. Most " +
+                "likely it happened due to OutOfMemoryError, caused by memory leaks while/before executing \"" + lastCommand +
+                "\" for " + lastMemorizerType + " type");
+        pr.feedbackOnException(OutOfMemoryError.class, "Your program threw an OutOfMemoryError. Most " +
+                "likely it is caused by memory leaks while/before executing \"" + lastCommand + "\" for " + lastMemorizerType +
+                " type");
+      }
+
+      @DynamicTest(timeLimit = 100_000, files = "getFiles", order = 47)
+      CheckResult memoryTest() {
+        String lastCommand = "";
+        String lastMemorizerType = "";
+
+        List<String> commands = new ArrayList<>();
+        MemoryMXBean memoryMXBean = ManagementFactory.getMemoryMXBean();
+
+        //InfiniteLoopDetector.setCheckSameInputBetweenRequests(false);
+        System.gc();
+        TestedProgram pr = new TestedProgram();
+
+        pr.start();
+
+        Object[][] data = {
+                {"1", "boolean", "booleans.txt", "false", 750_000},
+                {"2", "numbers", "numbers.txt", "2147483647", 1_500_000},
+                {"3", "words", "words.txt", "CakeIsALie", 1_500_000}
+        };
+        long startUsage = memoryMXBean.getHeapMemoryUsage().getUsed();
+        for (Object[] d : data) {
+          lastMemorizerType = (String) d[1];
+          updateFeedbackOnException(pr, lastCommand, lastMemorizerType);
+          if ((float) startUsage / (float) memoryMXBean.getHeapMemoryUsage().getUsed() < Consts.THRESHOLD) {
+            System.gc();
+            if ((float) startUsage / (float) memoryMXBean.getHeapMemoryUsage().getUsed() >= Consts.THRESHOLD) {
+              return CheckResult.wrong("After returning to the main menu, the amount of memory used by the program is " +
+                      "much larger than at the start of the program. Menu is a natural place to call garbage collector to" +
+                      " free up memory, used in memorizers");
+            } else {
+              return CheckResult.wrong("After returning to the main menu, the amount of memory used by the program is " +
+                      "much larger than at the start of the program. There is a memory leak in " + d[1] + " memorizer");
+            }
+          } else {
+            startUsage = memoryMXBean.getHeapMemoryUsage().getUsed();
+          }
+          pr.execute((String) d[0]);
+          commands.clear();
+          for (int i = 0; i < 4; i++) {
+            pr.execute("/readFile " + d[2]);
+            commands.add("/readFile <fileName>");
+            lastCommand = "/readFile <fileName>";
+            updateFeedbackOnException(pr, lastCommand, lastMemorizerType);
+
+            String output = pr.execute("/size");
+            commands.add("/size");
+            lastCommand = "/size";
+            updateFeedbackOnException(pr, lastCommand, lastMemorizerType);
+            if (!output.contains(String.valueOf((i + 1) * 1_500_000))) {
+              return CheckResult.wrong(Consts.moreLikelyOom("/size", commands, true));
+            }
+
+            output = pr.execute("/count " + d[3]);
+            commands.add("/count <value>");
+            lastCommand = "/count";
+            updateFeedbackOnException(pr, lastCommand, lastMemorizerType);
+            if (!output.contains(String.valueOf((Integer) d[4] * (i + 1)))) {
+              return CheckResult.wrong(Consts.moreLikelyOom("/count", commands, false));
+            }
+          }
+          pr.execute("/menu");
+        }
+
+        pr.execute("0");
+        return CheckResult.correct();
+      }
+    }
+  learner_created: false
+feedback_link: https://hyperskill.org/learn/step/31220#comment
+status: Unchecked
+record: -1
