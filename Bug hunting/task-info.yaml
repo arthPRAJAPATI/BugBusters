@@ -2010,6 +2010,15 @@ files:
 - name: src/test/BooleanMemorizeTest.java
   visible: true
   learner_created: true
+- name: src/memorizingtool/BooleanMemorizeBridge.java
+  visible: true
+  learner_created: true
+- name: src/memorizingtool/NumberMemorizeBridge.java
+  visible: true
+  learner_created: true
+- name: src/memorizingtool/WordMemorizeBridge.java
+  visible: true
+  learner_created: true
 feedback_link: https://hyperskill.org/learn/step/31218#comment
 status: Unchecked
 record: -1
