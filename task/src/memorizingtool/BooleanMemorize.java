@@ -154,7 +154,7 @@ public class BooleanMemorize {
     void sort(String way) {
         for (int i = 0; i < list.size(); i++) {
             for (int j = i; j < list.size(); j++) {
-                if (list.get(i) && !list.get(j) && way.equals("ascending") || list.get(i) && !list.get(j) && way.equals("descending")) {
+                if (list.get(i) && !list.get(j) && way.equals("ascending") || !list.get(i) && list.get(j) && way.equals("descending")) {
                     Boolean temp = list.get(i);
                     list.set(i, list.get(j));
                     list.set(j, temp);
@@ -186,7 +186,7 @@ public class BooleanMemorize {
 
     void getRandom() {
         Random random = new Random();
-        System.out.println("Random element: " + list.get(random.nextInt(1)));
+        System.out.println("Random element: " + list.get(random.nextInt(list.size())));
     }
 
     void printAll(String type) {
@@ -240,7 +240,7 @@ public class BooleanMemorize {
         for (Boolean i : list2) {
             list.add(i);
         }
-        System.out.println("Data imported: " + (list.size()));
+        System.out.println("Data imported: " + (list2.size()));
     }
 
     void writeFile(String path) throws IOException {
@@ -265,10 +265,7 @@ public class BooleanMemorize {
     }
 
     void mirror() {
-        ArrayList<Boolean> list2 = new ArrayList<>();
-        for (int i = list.size() - 1; i >= 0; i--) {
-            list2.add(list.get(i));
-        }
+        Collections.reverse(list);
         System.out.println("Data reversed");
     }
 
@@ -289,7 +286,7 @@ public class BooleanMemorize {
     }
 
     void flip(int index) {
-        list.set(index, !list.get(0));
+        list.set(index, !list.get(index));
         System.out.println("Element on " + index + " position flipped");
     }
 
@@ -300,19 +297,19 @@ public class BooleanMemorize {
 
     void and(int i, int j) {
         boolean a = list.get(i), b = list.get(j);
-        boolean res = a && a;
+        boolean res = a && b;
         System.out.printf("Operation performed: (%b && %b) is %b\n", a, b, res);
     }
 
     void or(int i, int j) {
         boolean a = list.get(i), b = list.get(j);
-        boolean res = b || b;
+        boolean res = a || b;
         System.out.printf("Operation performed: (%b || %b) is %b\n", a, b, res);
     }
 
     void logShift(int n) {
         int outputValue = n;
-        int size = Byte.SIZE;
+        int size = list.size();
 
         if (size == 0) {
             return;

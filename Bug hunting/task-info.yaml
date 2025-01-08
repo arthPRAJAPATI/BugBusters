@@ -1998,18 +1998,6 @@ files:
   text: |
     CakeIsALie
   learner_created: true
-- name: src/test/WordMemorizeTest.java
-  visible: true
-  learner_created: true
-- name: src/test/NumberMemorizeTest.java
-  visible: true
-  learner_created: true
-- name: src/test/GeneralCommandTest.java
-  visible: true
-  learner_created: true
-- name: src/test/BooleanMemorizeTest.java
-  visible: true
-  learner_created: true
 - name: src/memorizingtool/BooleanMemorizeBridge.java
   visible: true
   learner_created: true
@@ -2020,5 +2008,8 @@ files:
   visible: true
   learner_created: true
 feedback_link: https://hyperskill.org/learn/step/31218#comment
-status: Unchecked
+status: Solved
+feedback:
+  message: Congratulations!
+  time: "Wed, 08 Jan 2025 02:54:49 UTC"
 record: -1

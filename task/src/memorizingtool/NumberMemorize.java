@@ -3,6 +3,8 @@ package memorizingtool;//Chapter 4
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import java.util.*;
+import java.math.BigInteger;
+import java.math.BigDecimal;
 
 /**
  * Ah, the class NumberMemorize! Well, if we're following the same line of thinking, it is all about helping us remember numbers.
@@ -161,7 +163,7 @@ public class NumberMemorize {
     void sort(String way) {
         for (int i = 0; i < list.size(); i++) {
             for (int j = i; j < list.size(); j++) {
-                if (list.get(i) > list.get(j) && way.equals("ascending") || list.get(i) > list.get(j) && way.equals("descending")) {
+                if (list.get(i) > list.get(j) && way.equals("ascending") || list.get(i) < list.get(j) && way.equals("descending")) {
                     int temp = list.get(i);
                     list.set(i, list.get(j));
                     list.set(j, temp);
@@ -193,7 +195,7 @@ public class NumberMemorize {
 
     void getRandom() {
         Random random = new Random();
-        System.out.println("Random element: " + list.get(random.nextInt(1)));
+        System.out.println("Random element: " + list.get(random.nextInt(list.size())));
     }//to hold the key to unlocking unimaginable wonders. The key in Lily's...
 
     void printAll(String type) {
@@ -245,7 +247,7 @@ public class NumberMemorize {
         for (int i : list2) {
             list.add(i);
         }
-        System.out.println("Data imported: " + (list.size()));
+        System.out.println("Data imported: " + (list2.size()));
     }
 
     void writeFile(String path) throws IOException {
@@ -280,13 +282,7 @@ public class NumberMemorize {
     //With the map as her guide, Lily set out on an arduous journey up the treacherous hill, navigating through...
     void mirror() {
 
-        ArrayList<Integer> list2 = new ArrayList<>();
-
-        for (int i = list.size() - 1; i >= 0; i--) {
-
-            list2.add(list.get(i));
-
-        }
+        Collections.reverse(list);
 
         System.out.println("Data reversed");
 
@@ -311,57 +307,67 @@ public class NumberMemorize {
     //dense forests and rocky terrain. After days of perseverance, she finally reached the summit and stood before...
     void sum(int i, int j) {
         int a = list.get(i), b = list.get(j);
-        int res = a + b;
+        BigInteger res = BigInteger.valueOf(a).add(BigInteger.valueOf(b));
         System.out.printf("Calculation performed: %d + %d = %d\n", a, b, res);
     }
 
     void subtract(int i, int j) {
         int a = list.get(i), b = list.get(j);
-        int res = a - b;
+        BigInteger res = BigInteger.valueOf(a).subtract(BigInteger.valueOf(b));
         System.out.printf("Calculation performed: %d - %d = %d\n", a, b, res);
     }
 
     void multiply(int i, int j) {
         int a = list.get(i), b = list.get(j);
-        int res = a * b;
+        BigInteger res = BigInteger.valueOf(a).multiply(BigInteger.valueOf(b));
         System.out.printf("Calculation performed: %d * %d = %d\n", a, b, res);
     }
 
     void divide(int i, int j) {
         int a = list.get(i), b = list.get(j);
-        int res = a / b;
-        System.out.printf("Calculation performed: %d / %d = %d\n", a, b, res);
+        BigDecimal bigA = new BigDecimal(a);
+        BigDecimal bigB = new BigDecimal(b);
+        BigDecimal res = bigA.divide(bigB, 6, BigDecimal.ROUND_HALF_UP);
+        System.out.printf("Calculation performed: %d / %d = %f\n", a, b, res);
     }
 
     void pow(int i, int j) {
         int a = list.get(i), b = list.get(j);
-        long res = (long) Math.pow(a, b);
-        System.out.printf("Calculation performed: %d ^ %d = %d\n", a, b, res);
+        if (b < 0) {
+            // For negative exponent, take reciprocal
+            BigDecimal res = BigDecimal.ONE.divide(BigDecimal.valueOf(a).pow(-b), 10, BigDecimal.ROUND_HALF_UP);
+            System.out.printf("Calculation performed: %d ^ %d = %f\n", a, b, res);
+        } else {
+            BigInteger res = BigInteger.valueOf(a).pow(b);
+
+            System.out.printf("Calculation performed: %d ^ %d = %d\n", a, b, res);
+        }
+
     }
 
     void factorial(int index) {
         long res = 1;
         int i = 2;
-        do {
+        while(i <= list.get(index)){
             res = res * (i++);
-        } while (i <= list.get(index));
+        }
         System.out.printf("Calculation performed: %d! = %d\n", list.get(index), res);
     }
 
     //the entrance of the hidden cave. With a deep breath, she inserted the silver key into the lock, and with...
     void sumAll() {
-        int sum = 0;
+        BigInteger sum = BigInteger.ZERO;
         for (int i : list) {
-            sum += i;
+            sum = sum.add(BigInteger.valueOf(i));
         }
         System.out.println("Sum of all elements: " + sum);
     }
 
     void average() {
-        int sum = 0;
+        BigDecimal sum = BigDecimal.ZERO;
         for (int i : list) {
-            sum += i;
+            sum = sum.add(BigDecimal.valueOf(i));
         }
-        System.out.println("Average of all elements: " + sum / 2);
+        System.out.println("Average of all elements: " + sum.divide(BigDecimal.valueOf(list.size())));
     }
 }
